@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/models/user.dart';
+import 'package:newsapp/pages/sign_in.dart';
 
 class UserController extends GetxController {
   var isloading = false.obs;
@@ -60,6 +62,10 @@ class UserController extends GetxController {
         Get.snackbar('Success', data['message']);
         currentUsername.value = data['user']['username'];
         currentEmail.value = data['user']['email'];
+
+        // Ambil foto profil berdasarkan username
+        final profileController = Get.find<ProfilePicController>();
+        await profileController.getProfilePicture(currentUsername.value);
       } else {
         Get.snackbar('Error', data['error']);
       }
@@ -139,5 +145,22 @@ class UserController extends GetxController {
     } finally {
       isloading.value = false;
     }
+  }
+
+  // LOG OUT USER
+  void logout() {
+    final profileController = Get.find<ProfilePicController>();
+
+    // reset data user
+    currentUsername.value = '';
+    currentEmail.value = '';
+    currentPassword.value = '';
+
+    // reset foto profile
+    profileController.profilePictureUrl.value = 'assets/profile.jpeg';
+    profileController.isSucces.value = false;
+
+    // navigasi ke halaman sign in
+    Get.offAll(SignInPage());
   }
 }

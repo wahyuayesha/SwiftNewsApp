@@ -5,7 +5,7 @@ import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/pages/edit_akun.dart';
-import 'package:newsapp/pages/sign_in.dart';
+
 
 // ignore: must_be_immutable
 class MyAccount extends StatelessWidget {
@@ -30,16 +30,17 @@ class MyAccount extends StatelessWidget {
                 child: Column(
                   children: [
                     Obx(() {
-                      final image = profileController.selectedImage.value;
+                      final url = profileController.profilePictureUrl.value;
+
                       return CircleAvatar(
+                        radius: 50,
                         backgroundImage:
-                            image != null
-                                ? FileImage(image)
-                                : const AssetImage('assets/profile.jpeg'),
-                        radius: 60,
-                        backgroundColor: Colors.transparent,
+                            url.startsWith('http') && url.isNotEmpty
+                                ? NetworkImage(url)
+                                : AssetImage('assets/profile.jpeg'),
                       );
                     }),
+
                     const SizedBox(height: 10),
                     Text(
                       userController.currentUsername.value,
@@ -101,10 +102,7 @@ class MyAccount extends StatelessWidget {
               // Button Sign Out
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignInPage()),
-                  );
+                  userController.logout();
                 },
                 child: Text(
                   'Sign out',
