@@ -1,21 +1,80 @@
+import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:newsapp/base_url.dart';
+import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/models/news.dart';
 
 class BookmarkController extends GetxController {
-  RxList<News> bookmarked_news = <News>[].obs;
+  final UserController userController = Get.find<UserController>();
+  RxList<News> bookmarked_news = <News>[].obs; // Menyimpan berita yang sudah di bookmark pada user saat ini
 
-  void addBookmark(News news) {
-    if (!isBookmarked(news)) {
-      bookmarked_news.add(news);
+  // FUNCTION: Menambahkan berita ke database tabel bookmark
+  void bookmarkNews(News news) async {
+    var url = Uri.parse('$base_url/bookmark');
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "user_id": userController.currentUserId.value,
+        "title": news.title,
+        "url": news.url,
+        "imageUrl": news.imageUrl,
+        "source": news.source,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // Setelah berhasil, panggil getBookmarkedNews() untuk memperbarui data bookmark di UI
+      getBookmarkedNews();
+    } else {
+      Get.snackbar('Error', 'Gagal menambahkan berita ke bookmark');
     }
   }
 
-  void deleteBookmark(News news) {
-    bookmarked_news.removeWhere((item) => item.title == news.title);
+  // FUNCTION: Mengambil berita yang sudah di bookmark dari database
+  getBookmarkedNews() async {
+    var url = Uri.parse(
+      '$base_url/get-bookmark?user_id=${userController.currentUserId.value}',
+    );
+    var response = await http.get(
+      url,
+      headers: {"Content-Type": "application/json"},
+    );
+
+    if (response.statusCode == 200) {
+      var bookmarkedData = jsonDecode(response.body);
+
+      if (bookmarkedData != null && bookmarkedData.isNotEmpty) {
+       bookmarked_news.assignAll(
+        List<News>.from(bookmarkedData.map((item) => News.fromJson(item)))
+      );
+      }
+    } else {
+      Get.snackbar('Error', 'Gagal mengambil berita yang sudah di bookmark');
+    }
+  }
+
+  // FUNCTION: Menghapus berita dari bookmark 
+  void deleteBookmark(News news) async {
+    var url = Uri.parse('$base_url/delete-bookmark');
+    var response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "user_id": userController.currentUserId.value,
+        "title": news.title, // "title" : news.url
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      bookmarked_news.removeWhere((item) => item.title == news.title);
+    } else {
+      Get.snackbar('Error', 'Gagal menghapus berita dari bookmark');
+    }
   }
 
   bool isBookmarked(News news) {
     return bookmarked_news.any((item) => item.title == news.title);
   }
 }
-

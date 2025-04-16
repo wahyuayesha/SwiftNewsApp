@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:newsapp/base_url.dart';
+import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/models/user.dart';
 import 'package:newsapp/pages/sign_in.dart';
@@ -8,6 +10,7 @@ import 'package:newsapp/pages/sign_in.dart';
 class UserController extends GetxController {
   var isloading = false.obs;
   var isSuccess = false.obs;
+  var currentUserId = ''.obs;
   var currentUsername = ''.obs;
   var currentEmail = ''.obs;
   var currentPassword = ''.obs;
@@ -18,7 +21,7 @@ class UserController extends GetxController {
       isloading.value = true;
       isSuccess.value = false;
 
-      var url = Uri.parse('http://10.0.2.158:5000/register');
+      var url = Uri.parse('$base_url/register');
       var response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
@@ -30,6 +33,7 @@ class UserController extends GetxController {
       if (response.statusCode == 201) {
         isSuccess.value = true;
         Get.snackbar('Success', data['message']);
+        currentUserId.value = data['id'].toString();
         currentUsername.value = user.username;
         currentEmail.value = user.email;
       } else {
@@ -41,14 +45,14 @@ class UserController extends GetxController {
       isloading.value = false;
     }
   }
-
+  
   // LOGIN USER
   Future<void> loginUser(UserModel user) async {
     try {
       isloading.value = true;
       isSuccess.value = false;
 
-      var url = Uri.parse('http://10.0.2.158:5000/login');
+      var url = Uri.parse('$base_url/login');
       var response = await http.post(
         url,
         headers: {"Content-Type": "application/json"},
@@ -56,25 +60,34 @@ class UserController extends GetxController {
       );
 
       var data = jsonDecode(response.body);
+      print(data); // Debugging
 
       if (response.statusCode == 200) {
         isSuccess.value = true;
-        Get.snackbar('Success', data['message']);
+        currentUserId.value = data['user']['id'].toString();
         currentUsername.value = data['user']['username'];
         currentEmail.value = data['user']['email'];
 
-        // Ambil foto profil berdasarkan username
-        final profileController = Get.find<ProfilePicController>();
-        await profileController.getProfilePicture(currentUsername.value);
+        Get.snackbar('Success', data['message']);
+
+        // Try block untuk ambil profile picture saja
+        try {
+          final profileController = Get.find<ProfilePicController>();
+          await profileController.getProfilePicture(currentUsername.value);
+        } catch (e) {
+          print('Gagal ambil foto profil: $e');
+        }
       } else {
-        Get.snackbar('Error', data['error']);
+        Get.snackbar('Error', data['error'] ?? 'Login gagal');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Koneksi ke server gagal');
+      print('Error saat login: $e');
+      Get.snackbar('Error', 'Koneksi ke server saat login gagal');
     } finally {
       isloading.value = false;
     }
   }
+
 
   // GET USER DATA
   Future<void> getUserData() async {
@@ -82,7 +95,7 @@ class UserController extends GetxController {
       isloading.value = true;
 
       var url = Uri.parse(
-        'http://10.0.2.158:5000/get-user/${currentUsername.value}',
+        '$base_url/get-user/${currentUsername.value}',
       );
       var response = await http.get(
         url,
@@ -98,7 +111,7 @@ class UserController extends GetxController {
         Get.snackbar('Error', data['error'] ?? 'Gagal mengambil data user');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Koneksi ke server gagal');
+      Get.snackbar('Error', 'Koneksi ke server saat get gagal');
     } finally {
       isloading.value = false;
     }
@@ -115,7 +128,7 @@ class UserController extends GetxController {
       isloading.value = true;
 
       var url = Uri.parse(
-        'http://10.0.2.158:5000/update/${currentUsername.value}',
+        '$base_url/update/${currentUsername.value}',
       );
       var response = await http.put(
         url,
@@ -148,10 +161,12 @@ class UserController extends GetxController {
   }
 
   // LOG OUT USER
-  void logout() {
+  Future<void> logout() async {
     final profileController = Get.find<ProfilePicController>();
-
+    final bookmarkController = Get.find<BookmarkController>();
+    
     // reset data user
+    currentUserId.value = '';
     currentUsername.value = '';
     currentEmail.value = '';
     currentPassword.value = '';
@@ -159,6 +174,9 @@ class UserController extends GetxController {
     // reset foto profile
     profileController.profilePictureUrl.value = 'assets/profile.jpeg';
     profileController.isSucces.value = false;
+
+    // reset bookmark
+    bookmarkController.bookmarked_news.clear(); 
 
     // navigasi ke halaman sign in
     Get.offAll(SignInPage());

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 import mysql.connector
 import bcrypt
 
@@ -41,8 +41,10 @@ def register():
     cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s)", (username, email, hashed_password))
     db.commit()
 
+    user_id = cursor.lastrowid # Ambil ID user yang baru saja dibuat
+
     print("Success: User registered successfully")  # Tambahkan log
-    return jsonify({'message': 'User registered successfully'}), 201
+    return jsonify({'message': 'User registered successfully','id' : user_id}), 201
 
 
 # CREATE (POST) - Login User
@@ -132,7 +134,6 @@ def delete_user(username):
         return jsonify({'error': 'User not found'}), 404
 
     return jsonify({'message': 'User deleted successfully'}), 200
-
 
 # HTTP status code
 

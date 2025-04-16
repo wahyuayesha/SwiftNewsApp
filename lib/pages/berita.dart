@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/components/appbar.dart';
-import 'package:newsapp/components/newsListScreen.dart';
+import 'package:newsapp/components/newsTile.dart';
 import 'package:newsapp/controllers/news_controller.dart';
 import 'package:newsapp/colors.dart';
 

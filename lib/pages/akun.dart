@@ -31,7 +31,6 @@ class MyAccount extends StatelessWidget {
                   children: [
                     Obx(() {
                       final url = profileController.profilePictureUrl.value;
-
                       return CircleAvatar(
                         radius: 50,
                         backgroundImage:
@@ -58,7 +57,7 @@ class MyAccount extends StatelessWidget {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(EditAkun());
+                        Get.to(EditAkun(), transition: Transition.fade); 
                       },
                       style: ElevatedButton.styleFrom(
                         shadowColor: Colors.transparent,
@@ -76,22 +75,22 @@ class MyAccount extends StatelessWidget {
               Column(
                 children: [
                   tilePengaturan(
-                    const Icon(Icons.account_circle_outlined),
+                    const Icon(Icons.account_circle_outlined, color: Colors.grey,),
                     'Account',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.notifications_active_outlined),
+                    const Icon(Icons.notifications_active_outlined, color: Colors.grey,),
                     'Notification',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.wb_sunny_outlined),
+                    const Icon(Icons.wb_sunny_outlined, color: Colors.grey,),
                     'Theme',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.help_outline_rounded),
+                    const Icon(Icons.help_outline_rounded, color: Colors.grey,),
                     'Help',
                     null,
                   ),

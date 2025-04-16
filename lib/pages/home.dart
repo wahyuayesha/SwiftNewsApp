@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:newsapp/colors.dart';
 import 'package:newsapp/components/appbar.dart';
-import 'package:newsapp/components/newsListScreen.dart';
+import 'package:newsapp/components/newsTile.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/models/news.dart';

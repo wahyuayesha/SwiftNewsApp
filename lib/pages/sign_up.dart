@@ -226,7 +226,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.offAll(SignInPage());
+                      Get.offAll(SignInPage(), transition: Transition.cupertino, duration: Duration(seconds: 1));
                     },
                     child: Text('Sign In'),
                   ),

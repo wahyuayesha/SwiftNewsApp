@@ -37,7 +37,7 @@ class WelcomeScreen extends StatelessWidget {
                 const SizedBox(height: 40),
                 // Button lanjut
                 ElevatedButton(
-                  onPressed: () => Get.offAll(() => Main()),
+                  onPressed: () => Get.offAll(() => Main(), transition: Transition.fade, duration: Duration(seconds: 1)),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.buttonColor,
                     foregroundColor: AppColors.background,

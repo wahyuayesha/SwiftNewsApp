@@ -59,7 +59,7 @@ class SearchKeywordController extends GetxController {
       print(articles);
     }
   }
-
+  
   // Fungsi untuk mencari berita berdasarkan keyword yang diinputkan user
   void searchNews(String newKeyword) {
     keyword.value = newKeyword; // Mengubah keyword yang dicari

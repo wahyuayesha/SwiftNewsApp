@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:newsapp/base_url.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ProfilePicController extends GetxController {
@@ -46,7 +47,7 @@ class ProfilePicController extends GetxController {
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://10.0.2.158:5000/upload-profile-picture/$username'),
+        Uri.parse('$base_url/upload-profile-picture/$username'),
       );
 
       request.files.add(
@@ -73,7 +74,7 @@ class ProfilePicController extends GetxController {
   Future<void> getProfilePicture(String username) async {
     try {
       var url = Uri.parse(
-        'http://10.0.2.158:5000/get-user-profile-picture/$username',
+        '$base_url/get-user-profile-picture/$username',
       );
 
       var response = await http.get(
