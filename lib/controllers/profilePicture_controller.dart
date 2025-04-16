@@ -21,7 +21,7 @@ class ProfilePicController extends GetxController {
       if (!status.isGranted) {
         var result = await Permission.storage.request();
         if (!result.isGranted) {
-          Get.snackbar('Permission', 'Akses penyimpanan ditolak');
+          Get.snackbar('Permission', 'Storage permission is required to upload image');
           return;
         }
       }
@@ -36,7 +36,7 @@ class ProfilePicController extends GetxController {
         return;
       }
     } catch (e) {
-      Get.snackbar('Error', 'Terjadi kesalahan saat mengambil gambar');
+      Get.snackbar('Error', 'Failed to pick image');
       print('Image Picker Error: $e');
       return;
     }
@@ -91,7 +91,7 @@ class ProfilePicController extends GetxController {
         }
       } else {
         profilePictureUrl.value = 'assets/profile.jpeg'; // fallback
-        Get.snackbar('Error', data['error'] ?? 'Gagal mengambil gambar');
+        Get.snackbar('Error', data['error'] ?? 'Failed to load profile picture');
       } 
     } catch (e) {
       profilePictureUrl.value = 'assets/profile.jpeg'; // fallback on error

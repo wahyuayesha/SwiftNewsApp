@@ -66,7 +66,7 @@ def login():
     hashed_password = user['password']  
 
     # Validasi password
-    if not bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')):  # Perbaikan di sini
+    if not bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8')): 
         return jsonify({'error': 'Invalid password'}), 401
 
     return jsonify({'message': 'Login successful', 'user': user}), 200
@@ -123,7 +123,6 @@ def update_users(username):
     return jsonify({'message': 'User updated successfully'}), 200
 
 
-
 # DELETE (DELETE) - Hapus User
 @user_bp.route("/delete/<username>", methods=['DELETE'])
 def delete_user(username):
@@ -134,6 +133,7 @@ def delete_user(username):
         return jsonify({'error': 'User not found'}), 404
 
     return jsonify({'message': 'User deleted successfully'}), 200
+
 
 # HTTP status code
 

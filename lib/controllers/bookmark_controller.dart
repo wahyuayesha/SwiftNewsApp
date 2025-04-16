@@ -28,7 +28,11 @@ class BookmarkController extends GetxController {
       // Setelah berhasil, panggil getBookmarkedNews() untuk memperbarui data bookmark di UI
       getBookmarkedNews();
     } else {
-      Get.snackbar('Error', 'Gagal menambahkan berita ke bookmark');
+      if (userController.currentUserId.value.isEmpty) {
+        Get.snackbar('Error', 'Please sign up or login to bookmark this news');
+      } else {
+        Get.snackbar('Error', 'Failed to bookmark this news');
+      }
     }
   }
 
@@ -46,16 +50,18 @@ class BookmarkController extends GetxController {
       var bookmarkedData = jsonDecode(response.body);
 
       if (bookmarkedData != null && bookmarkedData.isNotEmpty) {
-       bookmarked_news.assignAll(
-        List<News>.from(bookmarkedData.map((item) => News.fromJson(item)))
-      );
+        bookmarked_news.assignAll(
+          List<News>.from(bookmarkedData.map((item) => News.fromJson(item))),
+        );
       }
     } else {
-      Get.snackbar('Error', 'Gagal mengambil berita yang sudah di bookmark');
+      if (userController.currentUserId.value.isNotEmpty) {
+        Get.snackbar('Error', 'Failed to load bookmarked news');
+      }
     }
   }
 
-  // FUNCTION: Menghapus berita dari bookmark 
+  // FUNCTION: Menghapus berita dari bookmark
   void deleteBookmark(News news) async {
     var url = Uri.parse('$base_url/delete-bookmark');
     var response = await http.post(
@@ -70,10 +76,11 @@ class BookmarkController extends GetxController {
     if (response.statusCode == 200) {
       bookmarked_news.removeWhere((item) => item.title == news.title);
     } else {
-      Get.snackbar('Error', 'Gagal menghapus berita dari bookmark');
+      Get.snackbar('Error', 'Failed to delete this news from bookmark');
     }
   }
 
+  // FUNCTION: Mengecek apakah berita sudah di bookmark
   bool isBookmarked(News news) {
     return bookmarked_news.any((item) => item.title == news.title);
   }

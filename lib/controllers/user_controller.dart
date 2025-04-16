@@ -8,14 +8,17 @@ import 'package:newsapp/models/user.dart';
 import 'package:newsapp/pages/sign_in.dart';
 
 class UserController extends GetxController {
-  var isloading = false.obs;
-  var isSuccess = false.obs;
+  // Data user saat ini
   var currentUserId = ''.obs;
   var currentUsername = ''.obs;
   var currentEmail = ''.obs;
   var currentPassword = ''.obs;
+  // Indikator 
+  var isloading = false.obs;
+  var isSuccess = false.obs;
+  
 
-  // SIGN UP / REGISTRASI USER
+  // FUNCTION: Register User
   Future<void> registerUser(UserModel user) async {
     try {
       isloading.value = true;
@@ -37,16 +40,17 @@ class UserController extends GetxController {
         currentUsername.value = user.username;
         currentEmail.value = user.email;
       } else {
-        Get.snackbar('Error', data['error'] ?? 'Registrasi gagal');
+        Get.snackbar('Error', data['error'] ?? 'Registration failed');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Koneksi ke server gagal');
+      Get.snackbar('Error', 'Connection to server failed');
     } finally {
       isloading.value = false;
     }
   }
   
-  // LOGIN USER
+
+  // FUNCTION: Login User
   Future<void> loginUser(UserModel user) async {
     try {
       isloading.value = true;
@@ -75,21 +79,21 @@ class UserController extends GetxController {
           final profileController = Get.find<ProfilePicController>();
           await profileController.getProfilePicture(currentUsername.value);
         } catch (e) {
-          print('Gagal ambil foto profil: $e');
+          print('Failed to fetch profile picture: $e');
         }
       } else {
-        Get.snackbar('Error', data['error'] ?? 'Login gagal');
+        Get.snackbar('Error', data['error'] ?? 'Login failed');
       }
     } catch (e) {
       print('Error saat login: $e');
-      Get.snackbar('Error', 'Koneksi ke server saat login gagal');
+      Get.snackbar('Error', 'Connection to server failed');
     } finally {
       isloading.value = false;
     }
   }
 
 
-  // GET USER DATA
+  // FUNCTION: memngambil data user
   Future<void> getUserData() async {
     try {
       isloading.value = true;
@@ -108,16 +112,17 @@ class UserController extends GetxController {
         Get.snackbar('Success', data['message']);
         print(data); // Debugging
       } else {
-        Get.snackbar('Error', data['error'] ?? 'Gagal mengambil data user');
+        Get.snackbar('Error', data['error'] ?? 'Failed to get user data');
       }
     } catch (e) {
-      Get.snackbar('Error', 'Koneksi ke server saat get gagal');
+      Get.snackbar('Error', 'Connection to server failed');
     } finally {
       isloading.value = false;
     }
   }
 
-  // UPDATE USER DATA
+
+  // FUNCTION: memperbarui data user
   Future<void> updateUserData({
     required String username,
     required String email,
@@ -150,17 +155,18 @@ class UserController extends GetxController {
         currentPassword.value = password;
         Get.snackbar('Success', data['message']);
       } else {
-        Get.snackbar('Error', data['error'] ?? 'Update gagal');
+        Get.snackbar('Error', data['error'] ?? 'Update failed');
         isSuccess.value = false;
       }
     } catch (e) {
-      Get.snackbar('Error', 'Koneksi ke server gagal');
+      Get.snackbar('Error', 'Connection to server failed');
     } finally {
       isloading.value = false;
     }
   }
 
-  // LOG OUT USER
+
+  // FUNCTION: Logout User
   Future<void> logout() async {
     final profileController = Get.find<ProfilePicController>();
     final bookmarkController = Get.find<BookmarkController>();
