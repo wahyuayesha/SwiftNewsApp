@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 #include "Generated.xcconfig"
+=======
+#include "Generated.xcconfig"
+>>>>>>> fitur/simpan-photo-profile

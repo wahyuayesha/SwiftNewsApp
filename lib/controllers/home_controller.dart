@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:newsapp/base_url.dart';
 import 'package:newsapp/models/news.dart';
 
 class HomeController extends GetxController {
-  final String apiKey = '98e2970c9bf743c39593289b599c394d';
   final String baseUrl = 'https://newsapi.org/v2';
 
   var topHeadlines = <News>[].obs; // Variabel untuk berita utama
@@ -17,7 +17,7 @@ class HomeController extends GetxController {
     fetchNews(type: 'top-headlines'); // Ambil berita top
     fetchNews(type: 'everything', sortBy: 'popularity'); // Ambil berita populer
   }
-
+  
   Future<void> fetchNews({required String type, String? sortBy, String? query}) async {
     try {
       isLoading.value = true;

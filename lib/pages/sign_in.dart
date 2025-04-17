@@ -72,7 +72,7 @@ class SignInPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: 10),
                     Obx(
                       () => TextField(
                         controller: passwordController,
@@ -180,7 +180,7 @@ class SignInPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.offAll(SignUpPage());
+                      Get.offAll(SignUpPage(), transition: Transition.cupertino, duration: Duration(seconds: 1));
                     },
                     child: Text('Sign Up'),
                   ),

@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:newsapp/base_url.dart';
 import 'package:newsapp/models/news.dart';
 
 // Controller untuk halaman pencarian berita (mengambil data berita berdasarkan keyword)
 class SearchKeywordController extends GetxController {
-  final String apiKey = '98e2970c9bf743c39593289b599c394d';
   final String baseUrl = 'https://newsapi.org/v2';
 
   var articles = <News>[].obs; // Menampung data berita yang didapat dari API
@@ -49,20 +49,21 @@ class SearchKeywordController extends GetxController {
           );
         }
       } else {
-        Get.snackbar('Error', 'Gagal mengambil data berita');
+        Get.snackbar('Error', 'Failed to fetch news'); // Menampilkan pesan error
       }
     } catch (e) {
       print("Terjadi kesalahan: ${e.toString()}");
-      Get.snackbar('Error', 'Terjadi kesalahan: ${e.toString()}');
+      Get.snackbar('Error', 'Error occured: ${e.toString()}');
     } finally {
       isLoading.value = false;
       print(articles);
     }
   }
-
+  
   // Fungsi untuk mencari berita berdasarkan keyword yang diinputkan user
   void searchNews(String newKeyword) {
     keyword.value = newKeyword; // Mengubah keyword yang dicari
     fetchKeywordNews();
   }
 }
+  

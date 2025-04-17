@@ -6,6 +6,7 @@ import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/news_controller.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
+import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/pages/akun.dart';
 import 'package:newsapp/pages/berita.dart';
@@ -15,15 +16,22 @@ import 'package:newsapp/pages/search.dart';
 import 'package:newsapp/pages/splashscreen.dart';
 
 void main() {
-  // Inisialisasi COntroller sekali di awal
-  Get.put(NewsController());
-  Get.put(WebViewControllerX());
-  Get.put(SearchController());
+  // Controller utama & global
+  Get.put(UserController());
   Get.put(HomeController());
+
+  // Controller halaman/fungsi
+  Get.put(NewsController());
+  Get.put(SearchController());
   Get.put(BookmarkController());
+
+  // Controller tambahan
   Get.put(ProfilePicController());
+  Get.put(WebViewControllerX());
+
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -57,10 +65,10 @@ class Main extends StatelessWidget {
     return Obx(
       () => SafeArea(
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: Colors.white,
           body: halaman[indexHalaman.value], // Menampilkan halaman sesuai index
           bottomNavigationBar: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)), color: Colors.white),            child: Padding(
+            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)), color: AppColors.primary),            child: Padding(
               padding: const EdgeInsets.all(8),
               child: GNav(
                 selectedIndex:
@@ -69,10 +77,10 @@ class Main extends StatelessWidget {
                   indexHalaman.value =
                       index; // Mengubah halaman sesuai tab yang ditekan
                 },
-                backgroundColor: Colors.white,
+                backgroundColor: AppColors.primary,
                 gap: 5,
-                color: const Color.fromARGB(255, 201, 201, 201),
-                activeColor: AppColors.primary,
+                color: Color.fromRGBO(214, 75, 33, 1),
+                activeColor: Colors.white,
                 padding: EdgeInsets.all(16),
                 tabs: const [
                   GButton(icon: Icons.search, text: 'Search'),

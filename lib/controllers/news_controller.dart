@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:newsapp/base_url.dart';
 import 'package:newsapp/models/news.dart';
 
 // Controller untuk halaman berita setiap ketegori
 class NewsController extends GetxController {
-  final String apiKey = '98e2970c9bf743c39593289b599c394d';
   final String baseUrl = 'https://newsapi.org/v2/top-headlines';
 
   var articles = <News>[].obs; // Menyimpan data berita yang didapat dari API
@@ -39,10 +39,6 @@ class NewsController extends GetxController {
           '$baseUrl?country=us&category=${selectedCategory.value}&apiKey=$apiKey',
         ),
       );
-      
-      // Debugging
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Body: ${response.body}"); 
 
       if (response.statusCode == 200) { // Jika status code response 200 (berhasil)
         final data = jsonDecode(response.body); // Mendekode data JSON
@@ -52,7 +48,7 @@ class NewsController extends GetxController {
           );
         }
       } else {
-        Get.snackbar('Error', 'Gagal mengambil data berita');
+        Get.snackbar('Error', 'Failed to fetch news');
       }
     } catch (e) {
       print("Terjadi kesalahan: ${e.toString()}");

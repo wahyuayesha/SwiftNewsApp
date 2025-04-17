@@ -5,7 +5,7 @@ import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/pages/edit_akun.dart';
-import 'package:newsapp/pages/sign_in.dart';
+
 
 // ignore: must_be_immutable
 class MyAccount extends StatelessWidget {
@@ -30,16 +30,16 @@ class MyAccount extends StatelessWidget {
                 child: Column(
                   children: [
                     Obx(() {
-                      final image = profileController.selectedImage.value;
+                      final url = profileController.profilePictureUrl.value;
                       return CircleAvatar(
+                        radius: 50,
                         backgroundImage:
-                            image != null
-                                ? FileImage(image)
-                                : const AssetImage('assets/profile.jpeg'),
-                        radius: 60,
-                        backgroundColor: Colors.transparent,
+                            url.startsWith('http') && url.isNotEmpty
+                                ? NetworkImage(url)
+                                : AssetImage('assets/profile.jpeg'),
                       );
                     }),
+
                     const SizedBox(height: 10),
                     Text(
                       userController.currentUsername.value,
@@ -57,7 +57,7 @@ class MyAccount extends StatelessWidget {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(EditAkun());
+                        Get.to(EditAkun(), transition: Transition.fade); 
                       },
                       style: ElevatedButton.styleFrom(
                         shadowColor: Colors.transparent,
@@ -75,22 +75,22 @@ class MyAccount extends StatelessWidget {
               Column(
                 children: [
                   tilePengaturan(
-                    const Icon(Icons.account_circle_outlined),
+                    const Icon(Icons.account_circle_outlined, color: Colors.grey,),
                     'Account',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.notifications_active_outlined),
+                    const Icon(Icons.notifications_active_outlined, color: Colors.grey,),
                     'Notification',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.wb_sunny_outlined),
+                    const Icon(Icons.wb_sunny_outlined, color: Colors.grey,),
                     'Theme',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.help_outline_rounded),
+                    const Icon(Icons.help_outline_rounded, color: Colors.grey,),
                     'Help',
                     null,
                   ),
@@ -101,10 +101,7 @@ class MyAccount extends StatelessWidget {
               // Button Sign Out
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignInPage()),
-                  );
+                  userController.logout();
                 },
                 child: Text(
                   'Sign out',

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static const Color primary = Colors.deepOrangeAccent; // Warna utama
-  static const Color background = Color.fromARGB(255, 248, 248, 248);        // Latar belakang aplikasi
+  static const Color background = Colors.white;        // Latar belakang aplikasi
   static final Color textFieldBackground = Colors.grey.shade200; // Background TextField dan button 
   static const Color textFieldBorder = Colors.grey;    // Border TextField dan button
   static const Color textColor = Colors.black;        // Warna teks

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/colors.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/main.dart';
-
 
 class EditProfileController extends GetxController {
   var obscurePassword = true.obs;
@@ -28,11 +26,14 @@ class EditAkun extends StatelessWidget {
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController currentPasswordController = TextEditingController();
+  final TextEditingController currentPasswordController =
+      TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
+  
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -40,7 +41,7 @@ class EditAkun extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+          padding: EdgeInsets.all(25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -52,18 +53,20 @@ class EditAkun extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       children: [
                         Obx(() {
-                          final image = profileController.selectedImage.value;
+                          final url = profileController.profilePictureUrl.value;
                           return CircleAvatar(
+                            radius: 50,
                             backgroundImage:
-                                image != null
-                                    ? FileImage(image)
+                                url.startsWith('http') && url.isNotEmpty
+                                    ? NetworkImage(url)
                                     : AssetImage('assets/profile.jpeg'),
-                            radius: 60,
-                            backgroundColor: Colors.transparent,
                           );
                         }),
                         IconButton.filled(
-                          onPressed: () => profileController.pickImage(),
+                          onPressed:
+                              () => profileController.pickImage(
+                                userController.currentUsername.value,
+                              ),
                           icon: Icon(Icons.edit),
                         ),
                       ],
@@ -108,7 +111,7 @@ class EditAkun extends StatelessWidget {
                             editController.obscurePassword.value
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: AppColors.textFieldBorder
+                            color: AppColors.textFieldBorder,
                           ),
                           onPressed:
                               () => editController.toggleObscurePassword(),
@@ -127,7 +130,7 @@ class EditAkun extends StatelessWidget {
                             editController.obscureNewPassword.value
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                            color: AppColors.textFieldBorder
+                            color: AppColors.textFieldBorder,
                           ),
                           onPressed:
                               () => editController.toggleObscureNewPassword(),
@@ -151,7 +154,6 @@ class EditAkun extends StatelessWidget {
     );
   }
 
-
   // Widget textfield
   Widget myTextField(
     String hint,
@@ -165,8 +167,7 @@ class EditAkun extends StatelessWidget {
       obscureText: obscureText,
       decoration: InputDecoration(
         prefixIcon: icon,
-        suffixIcon:
-            suffixIcon, 
+        suffixIcon: suffixIcon,
         hintText: hint,
         hintStyle: TextStyle(color: AppColors.textFieldBorder),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(13)),
@@ -182,7 +183,6 @@ class EditAkun extends StatelessWidget {
       ),
     );
   }
-
 
   // Alert dialog untuk konfirmasi simpan perubahan
   void alert() {

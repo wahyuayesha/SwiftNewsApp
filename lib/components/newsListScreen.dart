@@ -60,33 +60,34 @@ class NewsItem extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.blueAccent,
                             fontSize: 14,
-                            overflow:
-                                TextOverflow
-                                    .ellipsis, 
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1, 
+                          maxLines: 1,
                         ),
                       ),
-                      Obx(
-                        () => IconButton(
+                      Obx(() {
+                        final isBookmarked = bookmarkController.isBookmarked(
+                          news,
+                        );
+                        return IconButton(
                           padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
+                          constraints: const BoxConstraints(),
                           onPressed: () {
-                            if (bookmarkController.isBookmarked(news)) {
+                            if (isBookmarked) {
                               bookmarkController.deleteBookmark(news);
                             } else {
-                              bookmarkController.addBookmark(news);
+                              bookmarkController.bookmarkNews(news);
                             }
                           },
                           icon: Icon(
-                            bookmarkController.isBookmarked(news)
+                            isBookmarked
                                 ? Icons.bookmark
                                 : Icons.bookmark_border_rounded,
                             size: 20,
                             color: AppColors.primary,
                           ),
-                        ),
-                      ),
+                        );
+                      }),
                     ],
                   ),
                 ],

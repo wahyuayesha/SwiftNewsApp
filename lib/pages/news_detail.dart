@@ -22,6 +22,6 @@ class WebViewPage extends StatelessWidget {
           );
         }),
       ),
-    );
+    ); 
   }
 }
