@@ -29,9 +29,7 @@ class HomePage extends StatelessWidget {
               children: [
                 Obx(() {
                   if (homeController.isLoading.value) {
-                    return const Expanded(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (homeController.topHeadlines.isEmpty) {
                     return Expanded(
