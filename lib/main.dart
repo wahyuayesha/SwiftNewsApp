@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -9,13 +10,17 @@ import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/pages/akun.dart';
+import 'package:newsapp/pages/auth_page.dart';
 import 'package:newsapp/pages/berita.dart';
 import 'package:newsapp/pages/bookmarked.dart';
 import 'package:newsapp/pages/home.dart';
 import 'package:newsapp/pages/search.dart';
 import 'package:newsapp/pages/splashscreen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   // Controller utama & global
   Get.put(UserController());
   Get.put(HomeController());
@@ -29,9 +34,9 @@ void main() {
   Get.put(ProfilePicController());
   Get.put(WebViewControllerX());
 
+
   runApp(MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   @override
@@ -46,9 +51,26 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Utama
+// Dasar dari aplikasi
 class Main extends StatelessWidget {
-  Main({super.key});
+  const Main({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final user = Get.find<UserController>();
+
+    return Obx(() {
+      if (user.user.value != null) {
+        return MainPage();
+      } else {
+        return AuthPage();
+      }
+    });
+  }
+}
+
+// Halaman utama aplikasi
+class MainPage extends StatelessWidget {
   final RxInt indexHalaman = 2.obs;
 
   // Halaman yang akan ditampilkan
@@ -68,7 +90,14 @@ class Main extends StatelessWidget {
           backgroundColor: Colors.white,
           body: halaman[indexHalaman.value], // Menampilkan halaman sesuai index
           bottomNavigationBar: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)), color: AppColors.primary),            child: Padding(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+              color: AppColors.primary,
+            ),
+            child: Padding(
               padding: const EdgeInsets.all(8),
               child: GNav(
                 selectedIndex:
@@ -88,7 +117,7 @@ class Main extends StatelessWidget {
                   GButton(icon: Icons.home_rounded, text: 'Home'),
                   GButton(icon: Icons.bookmark_rounded, text: 'Saved'),
                   GButton(icon: Icons.person_rounded, text: 'Profile'),
-                ], 
+                ],
               ),
             ),
           ),

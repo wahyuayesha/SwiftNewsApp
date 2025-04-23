@@ -4,8 +4,7 @@ import 'package:newsapp/colors.dart';
 import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
-import 'package:newsapp/pages/edit_akun.dart';
-
+// import 'package:newsapp/pages/edit_akun.dart';
 
 // ignore: must_be_immutable
 class MyAccount extends StatelessWidget {
@@ -41,15 +40,19 @@ class MyAccount extends StatelessWidget {
                     }),
 
                     const SizedBox(height: 10),
-                    Text(
-                      userController.currentUsername.value,
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    Obx(
+                      () => Text(
+                        userController.username.value.isNotEmpty
+                            ? userController.username.value
+                            : userController.displayName ?? 'User',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Text(
-                      userController.currentEmail.value,
+                      userController.email.toString(),
                       style: TextStyle(color: Colors.black45),
                       maxLines: 1, // Batasi teks email agar tidak overflow
                       overflow: TextOverflow.ellipsis,
@@ -57,7 +60,7 @@ class MyAccount extends StatelessWidget {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(EditAkun(), transition: Transition.fade); 
+                        // Get.to(EditAkun(), transition: Transition.fade);
                       },
                       style: ElevatedButton.styleFrom(
                         shadowColor: Colors.transparent,
@@ -75,22 +78,28 @@ class MyAccount extends StatelessWidget {
               Column(
                 children: [
                   tilePengaturan(
-                    const Icon(Icons.account_circle_outlined, color: Colors.grey,),
+                    const Icon(
+                      Icons.account_circle_outlined,
+                      color: Colors.grey,
+                    ),
                     'Account',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.notifications_active_outlined, color: Colors.grey,),
+                    const Icon(
+                      Icons.notifications_active_outlined,
+                      color: Colors.grey,
+                    ),
                     'Notification',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.wb_sunny_outlined, color: Colors.grey,),
+                    const Icon(Icons.wb_sunny_outlined, color: Colors.grey),
                     'Theme',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.help_outline_rounded, color: Colors.grey,),
+                    const Icon(Icons.help_outline_rounded, color: Colors.grey),
                     'Help',
                     null,
                   ),

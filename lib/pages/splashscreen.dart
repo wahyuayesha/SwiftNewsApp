@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newsapp/pages/sign_up.dart';
-
+import 'package:newsapp/main.dart';
 
 class SplashScreen extends StatefulWidget {
   SplashScreen({super.key});
@@ -15,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), ()=> Get.off(SignUpPage()));
+    Timer(Duration(seconds: 5), ()=> Get.off(Main()));
   }
   
   @override

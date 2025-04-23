@@ -1,23 +1,36 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/colors.dart';
 import 'package:newsapp/controllers/user_controller.dart';
-import 'package:newsapp/main.dart';
-import 'package:newsapp/models/user.dart';
-import 'package:newsapp/pages/sign_up.dart';
 
 class SignInController extends GetxController {
-  var username = ''.obs;
-  var password = ''.obs;
   var obscurePassword = true.obs;
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void onClose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
 }
 
 class SignInPage extends StatelessWidget {
-  final SignInController controller = Get.put(SignInController());
+  final VoidCallback showSignUpPage;
+  SignInPage({super.key, required this.showSignUpPage});
+
+  final SignInController controller = Get.put(SignInController(),permanent: true,);
   final UserController userController = Get.find();
 
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: controller.emailController.text.trim(),
+      password: controller.passwordController.text.trim(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +62,13 @@ class SignInPage extends StatelessWidget {
                     ),
                     SizedBox(height: 70),
                     TextField(
-                      controller: usernameController,
-                      onChanged: (value) => controller.username.value = value,
+                      controller: controller.emailController,
                       decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.person,
                           color: AppColors.textFieldBorder,
                         ),
-                        hintText: 'Username',
+                        hintText: 'Email',
                         hintStyle: TextStyle(color: AppColors.textFieldBorder),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(13),
@@ -75,9 +87,8 @@ class SignInPage extends StatelessWidget {
                     SizedBox(height: 10),
                     Obx(
                       () => TextField(
-                        controller: passwordController,
+                        controller: controller.passwordController,
                         obscureText: controller.obscurePassword.value,
-                        onChanged: (value) => controller.password.value = value,
                         decoration: InputDecoration(
                           prefixIcon: Icon(
                             Icons.lock,
@@ -127,26 +138,7 @@ class SignInPage extends StatelessWidget {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
-                        UserModel user = UserModel(
-                          username: controller.username.value,
-                          email: 'None',
-                          password: controller.password.value,
-                        );
-                        print(
-                          "Data Terkirim ke Backend: ${user.toJsonString()}",
-                        );
-
-                        await userController.loginUser(user);
-
-                        if (userController.isSuccess.value) {
-                          controller.username.value = '';
-                          controller.password.value = '';
-
-                          usernameController.clear();
-                          passwordController.clear();
-
-                          Get.offAll(Main());
-                        }
+                        await signIn();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonColor,
@@ -180,7 +172,7 @@ class SignInPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.offAll(SignUpPage(), transition: Transition.cupertino, duration: Duration(seconds: 1));
+                     showSignUpPage();
                     },
                     child: Text('Sign Up'),
                   ),

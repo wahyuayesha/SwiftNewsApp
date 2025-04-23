@@ -74,9 +74,9 @@ class NewsItem extends StatelessWidget {
                           constraints: const BoxConstraints(),
                           onPressed: () {
                             if (isBookmarked) {
-                              bookmarkController.deleteBookmark(news);
+                              // bookmarkController.deleteBookmark(news);
                             } else {
-                              bookmarkController.bookmarkNews(news);
+                              // bookmarkController.bookmarkNews(news);
                             }
                           },
                           icon: Icon(

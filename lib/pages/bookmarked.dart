@@ -11,7 +11,6 @@ class BookmarkView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bookmarkController.getBookmarkedNews(); // Memanggil fungsi untuk mendapatkan berita yang sudah di bookmark
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(title: MyAppBar(), surfaceTintColor: AppColors.background, backgroundColor: AppColors.background),
