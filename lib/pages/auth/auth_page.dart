@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:newsapp/pages/sign_in.dart';
-import 'package:newsapp/pages/sign_up.dart';
+import 'package:newsapp/pages/auth/sign_in.dart';
+import 'package:newsapp/pages/auth/sign_up.dart';
 
 class AuthPage extends StatefulWidget {
   @override

@@ -1,47 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/models/user.dart';
 
 class UserController extends GetxController {
-  // Data user saat ini
-  Rxn<User> user = Rxn<User>();
-  var username = ''.obs;
+  var user = Rxn<User>(); // dari firebase auth 
+  var userModel = Rxn<UserModel>(); // dari firestore (username, email, profile picture, createdAt)
+  var isLoading = false.obs;
 
+  // FETCH USER DATA DARI FIRESTORE DIAWAL
   @override
   void onInit() {
     super.onInit();
-    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) {
+    user.value = FirebaseAuth.instance.currentUser;
+    if (user.value != null) {
+      fetchUserData();
+    }
+    // Dengarkan perubahan status login user
+    FirebaseAuth.instance.authStateChanges().listen((firebaseUser) async {
       user.value = firebaseUser;
       if (firebaseUser != null) {
-        ambilUsername();
+        await fetchUserData();
       } else {
-        username.value = '';
+        userModel.value = null;
       }
     });
   }
 
-  String? get displayName {
-    return user.value?.displayName ?? 'User';
-  }
+  // FUNGSI UNTUK (MENGAMBIL) DATA USER DARI FIRESTORE
+  Future<void> fetchUserData() async {
+    final uid = user.value?.uid;
+    try {
+      isLoading.value = true;
 
-  // Getter untuk akses email dengan aman
-  String? get email => user.value?.email;
+      final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
-  // Getter untuk tahu apakah user sudah login
-  bool get isLoggedIn => user.value != null;
-
-  // Logout
-  Future<void> logout() async {
-    await FirebaseAuth.instance.signOut();
-  }
-
-  // Ambil username dari Firestore
-  Future<void> ambilUsername() async {
-    var uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid != null) {
-      var doc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      username.value = doc['username'];
+      if (doc.exists) {
+        userModel.value = UserModel.fromMap(doc.data()!);
+      } else {
+        userModel.value = null;
+      }
+    } catch (e) {
+      userModel.value = null;
+    } finally {
+      isLoading.value = false;
     }
   }
 }

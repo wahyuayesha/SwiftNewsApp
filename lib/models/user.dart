@@ -1,36 +1,28 @@
-import "dart:convert";
-
+// models/user_model.dart
 class UserModel {
-  String username;
-  String email;
-  String password;
+  final String username;
+  final String email;
+  final String profilePictureUrl;
 
   UserModel({
     required this.username,
     required this.email,
-    required this.password,
+    required this.profilePictureUrl
   });
 
-  // Konversi dari objek ke JSON
-  Map<String, dynamic> toJson() {
-    return {
-      "username": username,
-      "email": email,
-      "password": password,
-    };
-  }
-
-  // Konversi dari JSON ke objek
-  factory UserModel.fromJson(Map<String, dynamic> json) {
+  factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      username: json["username"],
-      email: json["email"],
-      password: json["password"],
+      username: map['username'] ?? 'No Username',
+      email: map['email'] ?? 'No Email',
+      profilePictureUrl: map['profilePictureUrl'] ?? 'assets/profile.jpeg',
     );
   }
-  
-  // Konversi ke JSON String
-  String toJsonString() {
-    return jsonEncode(toJson());
+
+  Map<String, dynamic> toMap() {
+    return {
+      'username': username,
+      'email': email,
+      'profilePictureUrl': profilePictureUrl,
+    };
   }
-} 
+}

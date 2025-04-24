@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:newsapp/colors.dart';
+import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/news_controller.dart';
@@ -10,7 +11,7 @@ import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/pages/akun.dart';
-import 'package:newsapp/pages/auth_page.dart';
+import 'package:newsapp/pages/auth/auth_page.dart';
 import 'package:newsapp/pages/berita.dart';
 import 'package:newsapp/pages/bookmarked.dart';
 import 'package:newsapp/pages/home.dart';
@@ -24,6 +25,7 @@ void main() async {
   // Controller utama & global
   Get.put(UserController());
   Get.put(HomeController());
+  Get.put(AuthController());
 
   // Controller halaman/fungsi
   Get.put(NewsController());
@@ -59,6 +61,8 @@ class Main extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Get.find<UserController>();
 
+    // Menggunakan Obx untuk mendeteksi perubahan pada user
+    // Jika user sudah login, tampilkan MainPage, jika belum tampilkan AuthPage
     return Obx(() {
       if (user.user.value != null) {
         return MainPage();

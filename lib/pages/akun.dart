@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/colors.dart';
 import 'package:newsapp/components/appbar.dart';
+import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 // import 'package:newsapp/pages/edit_akun.dart';
 
 // ignore: must_be_immutable
 class MyAccount extends StatelessWidget {
-  MyAccount({super.key});
-  ProfilePicController profileController = Get.find();
   UserController userController = Get.find();
+  ProfilePicController profileController = Get.find();
+  AuthController authController = Get.find();
+  
+  MyAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,6 @@ class MyAccount extends StatelessWidget {
       appBar: AppBar(title: MyAppBar(), backgroundColor: AppColors.background),
       backgroundColor: AppColors.background,
       body: SingleChildScrollView(
-        // Agar bisa discroll
         child: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(
@@ -40,23 +42,32 @@ class MyAccount extends StatelessWidget {
                     }),
 
                     const SizedBox(height: 10),
-                    Obx(
-                      () => Text(
-                        userController.username.value.isNotEmpty
-                            ? userController.username.value
-                            : userController.displayName ?? 'User',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      userController.email.toString(),
-                      style: TextStyle(color: Colors.black45),
-                      maxLines: 1, // Batasi teks email agar tidak overflow
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    Obx(() {
+                      final user = userController.userModel.value;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            user != null && user.username.isNotEmpty
+                                ? user.username
+                                : 'Loading...',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            user != null && user.email.isNotEmpty
+                                ? user.email
+                                : 'Loading...',
+                            style: const TextStyle(color: Colors.black45),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      );
+                    }),
+
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
@@ -73,7 +84,6 @@ class MyAccount extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-
               // Tile-tile pengaturan
               Column(
                 children: [
@@ -110,7 +120,7 @@ class MyAccount extends StatelessWidget {
               // Button Sign Out
               TextButton(
                 onPressed: () {
-                  userController.logout();
+                  authController.logout();
                 },
                 child: Text(
                   'Sign out',

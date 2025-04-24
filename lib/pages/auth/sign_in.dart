@@ -5,10 +5,10 @@ import 'package:newsapp/colors.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 
 class SignInController extends GetxController {
-  var obscurePassword = true.obs;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  var obscurePassword = true.obs;
 
   @override
   void onClose() {
@@ -22,14 +22,21 @@ class SignInPage extends StatelessWidget {
   final VoidCallback showSignUpPage;
   SignInPage({super.key, required this.showSignUpPage});
 
-  final SignInController controller = Get.put(SignInController(),permanent: true,);
+  final SignInController controller = Get.put(SignInController());
   final UserController userController = Get.find();
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: controller.emailController.text.trim(),
       password: controller.passwordController.text.trim(),
-    );
+      );
+      userController.fetchUserData(); // Memanggil fungsi untuk mengambil data user
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar('Login Failed', e.message ?? 'An error occurred');
+    } catch (e) {
+      Get.snackbar('Error', e.toString());
+    }
   }
 
   @override

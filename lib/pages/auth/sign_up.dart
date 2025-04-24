@@ -1,16 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/colors.dart';
+import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 
 class SignUpController extends GetxController {
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  
   var obscurePassword = true.obs;
-
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
 
   @override
   void onClose() {
@@ -27,35 +26,7 @@ class SignUpPage extends StatelessWidget {
   
   final SignUpController controller = Get.put(SignUpController());
   final UserController userController = Get.put(UserController());
-
-  Future signUp() async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: controller.emailController.text.trim(),
-        password: controller.passwordController.text.trim(),
-      );
-
-      await userCredential.user!.updateDisplayName(controller.usernameController.text.trim());
-      await userCredential.user!.reload();
-
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
-        'username': controller.usernameController.text.trim(),
-        'email': controller.emailController.text.trim(),
-        'createdAt': Timestamp.now(),
-      });
-
-      // bisa juga update UserController (opsional)
-      userController.username.value = controller.usernameController.text.trim();
-
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar('Daftar Gagal', e.message ?? 'Terjadi kesalahan');
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
-    }
-  }
-
-
-  
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +161,8 @@ class SignUpPage extends StatelessWidget {
                       // Sign Up Button
                       ElevatedButton(
                         onPressed: () async {
-                          await signUp();
+                          await authController.signUp();
+                          await userController.fetchUserData();
                         },
 
                         style: ElevatedButton.styleFrom(
