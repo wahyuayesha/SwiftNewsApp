@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newsapp/colors.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/models/news.dart';

@@ -10,7 +10,7 @@ class AuthController extends GetxController {
  final SignInController signInController = Get.put(SignInController());
  final UserController userController = Get.find();
  
-  // FUNGSI UNTUK SIGN UP
+  // FUNGSI UNTUK (SIGN UP)
   Future signUp() async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -18,15 +18,11 @@ class AuthController extends GetxController {
         password: signUpController.passwordController.text.trim(),
       );
 
-      await userCredential.user!.updateDisplayName(signUpController.usernameController.text.trim());
-      await userCredential.user!.reload();
-
       await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
         'username': signUpController.usernameController.text.trim(),
         'email': signUpController.emailController.text.trim(),
         'createdAt': Timestamp.now(),
       });
-
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Login Failed', e.message ?? 'An error occurred');
     } catch (e) {
@@ -34,7 +30,7 @@ class AuthController extends GetxController {
     }
   }
 
-  // FUNGSI UNTUK SIGN IN
+  // FUNGSI UNTUK (SIGN IN)
   Future signIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(

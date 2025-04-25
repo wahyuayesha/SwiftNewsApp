@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:newsapp/colors.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/home_controller.dart';
@@ -10,12 +10,12 @@ import 'package:newsapp/controllers/news_controller.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
-import 'package:newsapp/pages/akun.dart';
+import 'package:newsapp/pages/main/akun.dart';
 import 'package:newsapp/pages/auth/auth_page.dart';
-import 'package:newsapp/pages/berita.dart';
-import 'package:newsapp/pages/bookmarked.dart';
-import 'package:newsapp/pages/home.dart';
-import 'package:newsapp/pages/search.dart';
+import 'package:newsapp/pages/main/berita.dart';
+import 'package:newsapp/pages/main/bookmarked.dart';
+import 'package:newsapp/pages/main/home.dart';
+import 'package:newsapp/pages/main/search.dart';
 import 'package:newsapp/pages/splashscreen.dart';
 
 void main() async {

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:newsapp/base_url.dart';
+import 'package:newsapp/constants/base_url.dart';
 import 'package:newsapp/models/news.dart';
 
 // Controller untuk halaman berita setiap ketegori

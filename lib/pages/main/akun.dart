@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newsapp/colors.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
+import 'package:newsapp/pages/edit_akun.dart';
 // import 'package:newsapp/pages/edit_akun.dart';
 
 // ignore: must_be_immutable
@@ -12,7 +13,7 @@ class MyAccount extends StatelessWidget {
   UserController userController = Get.find();
   ProfilePicController profileController = Get.find();
   AuthController authController = Get.find();
-  
+
   MyAccount({super.key});
 
   @override
@@ -71,7 +72,7 @@ class MyAccount extends StatelessWidget {
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () {
-                        // Get.to(EditAkun(), transition: Transition.fade);
+                        Get.to(EditAkun(), transition: Transition.fade);
                       },
                       style: ElevatedButton.styleFrom(
                         shadowColor: Colors.transparent,
@@ -122,10 +123,17 @@ class MyAccount extends StatelessWidget {
                 onPressed: () {
                   authController.logout();
                 },
-                child: Text(
-                  'Sign out',
-                  style: TextStyle(color: AppColors.primary),
-                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(Icons.logout_outlined, color: AppColors.primary,),
+                    const SizedBox(width: 5),
+                    Text(
+                    'Sign out',
+                    style: TextStyle(color: AppColors.primary),
+                    ),
+                  ],
+                )
               ),
             ],
           ),

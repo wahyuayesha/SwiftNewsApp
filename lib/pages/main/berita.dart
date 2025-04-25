@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/components/newsTile.dart';
 import 'package:newsapp/controllers/news_controller.dart';
-import 'package:newsapp/colors.dart';
+import 'package:newsapp/constants/colors.dart';
 
 class BeritaScreen extends StatelessWidget {
   @override

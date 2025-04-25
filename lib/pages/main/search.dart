@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newsapp/colors.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/components/newsTile.dart';
 import 'package:newsapp/controllers/search_controller.dart';

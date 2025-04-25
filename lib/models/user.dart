@@ -17,7 +17,7 @@ class UserModel {
       profilePictureUrl: map['profilePictureUrl'] ?? 'assets/profile.jpeg',
     );
   }
-
+  
   Map<String, dynamic> toMap() {
     return {
       'username': username,

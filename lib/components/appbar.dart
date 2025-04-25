@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newsapp/colors.dart';
+import 'package:newsapp/constants/colors.dart';
 
 class MyAppBar extends StatelessWidget {
   const MyAppBar({super.key});
