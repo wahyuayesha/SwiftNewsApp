@@ -72,7 +72,7 @@ class SignInPage extends StatelessWidget {
                       controller: controller.emailController,
                       decoration: InputDecoration(
                         prefixIcon: Icon(
-                          Icons.person,
+                          Icons.email,
                           color: AppColors.textFieldBorder,
                         ),
                         hintText: 'Email',

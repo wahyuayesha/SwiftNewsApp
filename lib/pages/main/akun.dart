@@ -37,8 +37,8 @@ class MyAccount extends StatelessWidget {
                         radius: 50,
                         backgroundImage:
                             user != null && user.profilePictureUrl.isNotEmpty
-                                    ? AssetImage(user.profilePictureUrl)
-                                    : AssetImage('assets/profile.jpeg'),
+                                ? AssetImage(user.profilePictureUrl)
+                                : AssetImage('assets/profile.jpeg'),
                       );
                     }),
 
@@ -89,22 +89,25 @@ class MyAccount extends StatelessWidget {
               Column(
                 children: [
                   tilePengaturan(
+                    context,
                     const Icon(
                       Icons.account_circle_outlined,
                       color: Colors.grey,
                     ),
                     'Account',
-                    null,
+                    account(context),
                   ),
                   tilePengaturan(
+                    context,
                     const Icon(Icons.help_outline_outlined, color: Colors.grey),
                     'About',
-                    null,
+                    about(context),
                   ),
                   tilePengaturan(
+                    context,
                     const Icon(Icons.bug_report_outlined, color: Colors.grey),
                     'Report Bug',
-                    null,
+                    reportBug(context),
                   ),
                 ],
               ),
@@ -118,14 +121,14 @@ class MyAccount extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Icon(Icons.logout_outlined, color: AppColors.primary,),
+                    Icon(Icons.logout_outlined, color: AppColors.primary),
                     const SizedBox(width: 5),
                     Text(
-                    'Sign out',
-                    style: TextStyle(color: AppColors.primary),
+                      'Sign out',
+                      style: TextStyle(color: AppColors.primary),
                     ),
                   ],
-                )
+                ),
               ),
             ],
           ),
@@ -135,7 +138,12 @@ class MyAccount extends StatelessWidget {
   }
 
   // Widget untuk tile pengaturan
-  Widget tilePengaturan(Icon icon, String teks, dynamic route) {
+  Widget tilePengaturan(
+    BuildContext context,
+    Icon icon,
+    String teks,
+    Widget route,
+  ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
@@ -146,8 +154,128 @@ class MyAccount extends StatelessWidget {
         leading: icon,
         title: Text(teks),
         trailing: const Icon(Icons.navigate_next_rounded),
-        onTap: route,
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(content: route);
+            },
+          );
+        },
       ),
+    );
+  }
+
+  Widget reportBug(context) {
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Text('Report Bug', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          TextField(
+            decoration: InputDecoration(
+              hintText: 'Enter your bug description',
+              hintStyle: TextStyle(color: AppColors.textFieldBorder),
+              prefixIcon: Icon(Icons.search, color: AppColors.textFieldBorder),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(13),
+              ),
+              filled: true,
+              fillColor: AppColors.textFieldBackground,
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(13),
+                borderSide: BorderSide(
+                  color: AppColors.textFieldBackground,
+                  width: 1,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              // Kirim laporan bug
+              Get.snackbar(
+                'Notice',
+                "Bug report sent successfully, thanks for your feedback!",
+              );
+              Navigator.pop(context);
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.background,
+            ),
+            child: const Text('Send Report'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget account(context) {
+    final user = userController.userModel.value;
+
+    if (user == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return SizedBox(
+      height: 150,
+      child: Column(
+        children: [
+          Text('Account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 10),
+          Text('Username: ${user.username}',style: TextStyle(color: AppColors.textFieldBorder)),
+          Text('Email: ${user.email}',style: TextStyle(color: AppColors.textFieldBorder)),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              alert();
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.redAccent,
+              foregroundColor: AppColors.background,
+            ),
+            child: const Text('Delete Account'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget about(context) {
+    return SizedBox(
+      height: 300,
+      child: Column(
+      children: [
+          Text('About SwiftNews', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10),
+          Text('SwiftNews is a news application that provides the latest news articles from various sources. It allows users to bookmark articles, search for specific topics, and customize their news feed based on their interests.',
+              style: TextStyle(color: AppColors.textFieldBorder)),
+          SizedBox(height: 10),
+          Text('SwiftNews sourced from NewsAPI.org an API that provides access to news articles from various sources around the world.',
+              style: TextStyle(color: AppColors.textFieldBorder)),
+        ],
+      ));
+  }
+
+  // Alert dialog untuk konfirmasi simpan perubahan
+  void alert() {
+    Get.defaultDialog(
+      title: 'Delete Account',
+      titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      middleText: 'Are you sure you want to delete your current account?',
+      textConfirm: 'Yes',
+      textCancel: 'No',
+      confirmTextColor: Colors.white,
+      buttonColor: Colors.redAccent,
+      onConfirm: () async {
+       await authController.deleteUserAccount();
+      },
+      onCancel: () {
+        Get.back();
+      },
     );
   }
 }

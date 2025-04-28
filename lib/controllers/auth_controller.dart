@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/controllers/user_controller.dart';
+import 'package:newsapp/main.dart';
 import 'package:newsapp/pages/auth/sign_in.dart';
 import 'package:newsapp/pages/auth/sign_up.dart';
 
@@ -47,7 +48,25 @@ class AuthController extends GetxController {
 
   // FUNGSI UNTUK (LOGOUT)
   Future<void> logout() async {
-    userController.userModel.value = null;
-    await FirebaseAuth.instance.signOut();
+      userController.userModel.value = null;
+      await FirebaseAuth.instance.signOut();
+    }
+
+  // FUNGSI UNTUK (HAPUS)AKUN
+  Future<void> deleteUserAccount() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
+        await user.delete();
+        Get.snackbar('Success', 'Account deleted permanently.');
+        Get.offAll(Main());
+      } catch (e) {
+        Get.snackbar('Error', 'Error occured: $e');
+      }
+    } else {
+      Get.snackbar('Error', 'User not found.');
+    }
   }
 }
