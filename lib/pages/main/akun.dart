@@ -32,13 +32,13 @@ class MyAccount extends StatelessWidget {
                 child: Column(
                   children: [
                     Obx(() {
-                      final url = profileController.profilePictureUrl.value;
+                      final user = userController.userModel.value;
                       return CircleAvatar(
                         radius: 50,
                         backgroundImage:
-                            url.startsWith('http') && url.isNotEmpty
-                                ? NetworkImage(url)
-                                : AssetImage('assets/profile.jpeg'),
+                            user != null && user.profilePictureUrl.isNotEmpty
+                                    ? AssetImage(user.profilePictureUrl)
+                                    : AssetImage('assets/profile.jpeg'),
                       );
                     }),
 
@@ -97,21 +97,13 @@ class MyAccount extends StatelessWidget {
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(
-                      Icons.notifications_active_outlined,
-                      color: Colors.grey,
-                    ),
-                    'Notification',
+                    const Icon(Icons.help_outline_outlined, color: Colors.grey),
+                    'About',
                     null,
                   ),
                   tilePengaturan(
-                    const Icon(Icons.wb_sunny_outlined, color: Colors.grey),
-                    'Theme',
-                    null,
-                  ),
-                  tilePengaturan(
-                    const Icon(Icons.help_outline_rounded, color: Colors.grey),
-                    'Help',
+                    const Icon(Icons.bug_report_outlined, color: Colors.grey),
+                    'Report Bug',
                     null,
                   ),
                 ],

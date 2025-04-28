@@ -36,7 +36,6 @@ void main() async {
   Get.put(ProfilePicController());
   Get.put(WebViewControllerX());
 
-
   runApp(MyApp());
 }
 

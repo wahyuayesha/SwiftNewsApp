@@ -11,12 +11,13 @@ class UserModel {
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
-      username: map['username'] ?? 'No Username',
-      email: map['email'] ?? 'No Email',
-      profilePictureUrl: map['profilePictureUrl'] ?? 'assets/profile.jpeg',
-    );
-  }
+  return UserModel(
+    username: map['username'] ?? 'No Username',
+    email: map['email'] ?? 'No Email',
+    profilePictureUrl: map['profilePicture'] ?? 'assets/profile.jpeg', // ini diperbaiki
+  );
+}
+
   
   Map<String, dynamic> toMap() {
     return {

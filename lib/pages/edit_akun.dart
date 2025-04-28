@@ -5,7 +5,6 @@ import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 
-
 class EditProfileController extends GetxController {
   var obscurePassword = true.obs;
   var obscureNewPassword = true.obs;
@@ -32,6 +31,8 @@ class EditAkun extends StatelessWidget {
       TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
 
+  var profilePictureUrl = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,22 +54,58 @@ class EditAkun extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       children: [
                         Obx(() {
-                          final url = profileController.profilePictureUrl.value;
+                          final user = userController.userModel.value;
                           return CircleAvatar(
                             radius: 50,
                             backgroundImage:
-                                url.startsWith('http') && url.isNotEmpty
-                                    ? NetworkImage(url)
+                                user != null && user.profilePictureUrl.isNotEmpty
+                                    ? AssetImage(user.profilePictureUrl)
                                     : AssetImage('assets/profile.jpeg'),
                           );
                         }),
-                        // IconButton.filled(
-                        //   onPressed:
-                        //       () => profileController.pickImage(
-                        //         userController.currentUsername.value,
-                        //       ),
-                        //   icon: Icon(Icons.edit),
-                        // ),
+                        IconButton.filled(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  content: SizedBox(
+                                    height: 170,
+                                    child: GridView.builder(
+                                      gridDelegate:
+                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3, // Jumlah kolom
+                                            crossAxisSpacing:
+                                                10, // Jarak antar kolom
+                                            mainAxisSpacing:
+                                                10, // Jarak antar baris
+                                          ),
+                                      itemCount: 6,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            // Lakukan sesuatu saat gambar dipilih
+                                            profilePictureUrl = 'assets/profile/profile${index + 1}.jpg';
+                                            print('Gambar ${index + 1} dipilih');
+                                            Get.snackbar('Notice', 'Save to see profile picture changes',duration: Duration(seconds: 2));
+                                            Navigator.pop(context);
+                                          },
+                                          child: CircleAvatar(
+                                            radius: 50,
+                                            backgroundImage: AssetImage(
+                                              'assets/profile/profile${index + 1}.jpg',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -212,12 +249,13 @@ class EditAkun extends StatelessWidget {
         print('Email: ${emailController.text.trim()}');
         print('Current Password: ${currentPasswordController.text.trim()}');
         print('New Password: ${newPasswordController.text.trim()}');
+        print('Profile Picture URL: $profilePictureUrl');
         // Panggil fungsi updateUserData
         await userController.updateUserData(
           newUsername: usernameController.text.trim(),
           currentPassword: currentPasswordController.text.trim(),
           newPassword: newPasswordController.text.trim(),
-          newProfilePictureUrl: '',
+          newProfilePictureUrl: profilePictureUrl.trim(),
         );
       },
       onCancel: () {
