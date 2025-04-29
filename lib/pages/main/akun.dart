@@ -167,13 +167,18 @@ class MyAccount extends StatelessWidget {
   }
 
   Widget reportBug(context) {
+    final TextEditingController reportController = TextEditingController();
     return SizedBox(
       height: 150,
       child: Column(
         children: [
-          Text('Report Bug', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            'Report Bug',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 10),
           TextField(
+            controller: reportController,
             decoration: InputDecoration(
               hintText: 'Enter your bug description',
               hintStyle: TextStyle(color: AppColors.textFieldBorder),
@@ -194,12 +199,9 @@ class MyAccount extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           TextButton(
-            onPressed: () {
+            onPressed: () async {
               // Kirim laporan bug
-              Get.snackbar(
-                'Notice',
-                "Bug report sent successfully, thanks for your feedback!",
-              );
+              await userController.reportBug(reportController.text);
               Navigator.pop(context);
             },
             style: TextButton.styleFrom(

@@ -98,4 +98,19 @@ class UserController extends GetxController {
       }
     }
   }
+
+  // FUNCTION: REPORT BUG
+  Future<void> reportBug(String bugReport) async {
+    try {
+      await FirebaseFirestore.instance.collection('bug_report').add({
+        'email': userModel.value?.email,
+        'username': userModel.value?.username,
+        'bug_report': bugReport,
+        'sendAt': Timestamp.now(),
+      });
+      Get.snackbar('Success', 'Bug reported successfully!');
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to report bug: ${e.toString()}');
+    }
+  }
 }

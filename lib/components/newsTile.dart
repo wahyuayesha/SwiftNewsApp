@@ -72,12 +72,13 @@ class NewsItem extends StatelessWidget {
                         return IconButton(
                           padding: EdgeInsets.zero,
                           constraints: const BoxConstraints(),
-                          onPressed: () {
-                            if (isBookmarked) {
-                              // bookmarkController.deleteBookmark(news);
-                            } else {
-                              // bookmarkController.bookmarkNews(news);
-                            }
+                          onPressed: () async {
+                            // if (isBookmarked) {
+                            //   // bookmarkController.deleteBookmark(news);
+                            // } else {
+                            //   // bookmarkController.bookmarkNews(news);
+                            // }
+                            // await bookmarkController.
                           },
                           icon: Icon(
                             isBookmarked
