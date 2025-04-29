@@ -180,7 +180,7 @@ class MyAccount extends StatelessWidget {
           TextField(
             controller: reportController,
             decoration: InputDecoration(
-              hintText: 'Enter your bug description',
+              hintText: 'Enter bug description',
               hintStyle: TextStyle(color: AppColors.textFieldBorder),
               prefixIcon: Icon(Icons.search, color: AppColors.textFieldBorder),
               border: OutlineInputBorder(

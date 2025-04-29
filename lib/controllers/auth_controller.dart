@@ -1,29 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/main.dart';
 import 'package:newsapp/pages/auth/sign_in.dart';
 import 'package:newsapp/pages/auth/sign_up.dart';
 
 class AuthController extends GetxController {
- final SignUpController signUpController = Get.put(SignUpController());
- final SignInController signInController = Get.put(SignInController());
- final UserController userController = Get.find();
- 
+  final SignUpController signUpController = Get.put(SignUpController());
+  final SignInController signInController = Get.put(SignInController());
+  final UserController userController = Get.find();
+  final BookmarkController bookmarkController = Get.find();
   // FUNGSI UNTUK (SIGN UP)
   Future signUp() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: signUpController.emailController.text.trim(),
-        password: signUpController.passwordController.text.trim(),
-      );
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: signUpController.emailController.text.trim(),
+            password: signUpController.passwordController.text.trim(),
+          );
 
-      await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
-        'username': signUpController.usernameController.text.trim(),
-        'email': signUpController.emailController.text.trim(),
-        'createdAt': Timestamp.now(),
-      });
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set({
+            'username': signUpController.usernameController.text.trim(),
+            'email': signUpController.emailController.text.trim(),
+            'createdAt': Timestamp.now(),
+          });
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Login Failed', e.message ?? 'An error occurred');
     } catch (e) {
@@ -35,10 +40,10 @@ class AuthController extends GetxController {
   Future signIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: signInController.emailController.text.trim(),
-      password: signInController.passwordController.text.trim(),
+        email: signInController.emailController.text.trim(),
+        password: signInController.passwordController.text.trim(),
       );
-      userController.fetchUserData(); 
+      userController.fetchUserData();
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Login Failed', e.message ?? 'An error occurred');
     } catch (e) {
@@ -48,9 +53,16 @@ class AuthController extends GetxController {
 
   // FUNGSI UNTUK (LOGOUT)
   Future<void> logout() async {
-      userController.userModel.value = null;
-      await FirebaseAuth.instance.signOut();
-    }
+    // Menghapus data user dari controller
+    userController.userModel.value = null;
+    // Membersihkan textfield 
+    Get.delete<SignInController>(); 
+    Get.delete<SignUpController>(); 
+    // Log out dari firebase auth
+    await FirebaseAuth.instance.signOut();
+    // Menghapus data bookmark
+    bookmarkController.clearBookmarks();
+  }
 
   // FUNGSI UNTUK (HAPUS)AKUN
   Future<void> deleteUserAccount() async {
@@ -58,7 +70,10 @@ class AuthController extends GetxController {
 
     if (user != null) {
       try {
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .delete();
         await user.delete();
         Get.snackbar('Success', 'Account deleted permanently.');
         Get.offAll(Main());
