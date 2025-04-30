@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/models/news.dart';
 
@@ -28,9 +29,13 @@ class BookmarkController extends GetxController {
 
         // Tambahkan ke UI secara realtime
         bookmarked_news.add(news);
-        print('isi bookmarked_news: $bookmarked_news');
       } catch (e) {
-        Get.snackbar('Error', 'Gagal menambahkan bookmark: $e');
+        Get.snackbar(
+          'Error',
+          'Failed to add bookmark: $e',
+          backgroundColor: AppColors.errorSnackbar,
+          colorText: AppColors.errorSnackbarText,
+        );
       }
     }
   }
@@ -52,7 +57,12 @@ class BookmarkController extends GetxController {
       // Hapus dari UI
       bookmarked_news.removeWhere((item) => item.url == news.url);
     } catch (e) {
-      Get.snackbar('Error', 'Gagal menghapus bookmark: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to deleting bookmark: $e',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     }
   }
 
@@ -100,7 +110,12 @@ class BookmarkController extends GetxController {
         }
       }
     } catch (e) {
-      print('Error deleting bookmarks: $e');
+      Get.snackbar(
+        'Error',
+        'Failed to deleting bookmarks: $e',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     }
   }
 

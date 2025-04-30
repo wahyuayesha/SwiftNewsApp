@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
-import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/pages/edit_akun.dart';
 // import 'package:newsapp/pages/edit_akun.dart';
@@ -11,7 +10,6 @@ import 'package:newsapp/pages/edit_akun.dart';
 // ignore: must_be_immutable
 class MyAccount extends StatelessWidget {
   UserController userController = Get.find();
-  ProfilePicController profileController = Get.find();
   AuthController authController = Get.find();
 
   MyAccount({super.key});
@@ -226,10 +224,19 @@ class MyAccount extends StatelessWidget {
       height: 150,
       child: Column(
         children: [
-          Text('Account', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            'Account',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           const SizedBox(height: 10),
-          Text('Username: ${user.username}',style: TextStyle(color: AppColors.textFieldBorder)),
-          Text('Email: ${user.email}',style: TextStyle(color: AppColors.textFieldBorder)),
+          Text(
+            'Username: ${user.username}',
+            style: TextStyle(color: AppColors.textFieldBorder),
+          ),
+          Text(
+            'Email: ${user.email}',
+            style: TextStyle(color: AppColors.textFieldBorder),
+          ),
           const SizedBox(height: 10),
           TextButton(
             onPressed: () {
@@ -250,16 +257,24 @@ class MyAccount extends StatelessWidget {
     return SizedBox(
       height: 300,
       child: Column(
-      children: [
-          Text('About SwiftNews', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        children: [
+          Text(
+            'About SwiftNews',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           SizedBox(height: 10),
-          Text('SwiftNews is a news application that provides the latest news articles from various sources. It allows users to bookmark articles, search for specific topics, and customize their news feed based on their interests.',
-              style: TextStyle(color: AppColors.textFieldBorder)),
+          Text(
+            'SwiftNews is a news application that provides the latest news articles from various sources. It allows users to bookmark articles, search for specific topics, and customize their news feed based on their interests.',
+            style: TextStyle(color: AppColors.textFieldBorder),
+          ),
           SizedBox(height: 10),
-          Text('SwiftNews sourced from NewsAPI.org an API that provides access to news articles from various sources around the world.',
-              style: TextStyle(color: AppColors.textFieldBorder)),
+          Text(
+            'SwiftNews sourced from NewsAPI.org an API that provides access to news articles from various sources around the world.',
+            style: TextStyle(color: AppColors.textFieldBorder),
+          ),
         ],
-      ));
+      ),
+    );
   }
 
   // Alert dialog untuk konfirmasi simpan perubahan
@@ -273,7 +288,7 @@ class MyAccount extends StatelessWidget {
       confirmTextColor: Colors.white,
       buttonColor: Colors.redAccent,
       onConfirm: () async {
-       await authController.deleteUserAccount();
+        await authController.deleteUserAccount();
       },
       onCancel: () {
         Get.back();

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:newsapp/constants/base_url.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/models/news.dart';
 
 // Controller untuk halaman pencarian berita (mengambil data berita berdasarkan keyword)
@@ -23,7 +24,7 @@ class SearchKeywordController extends GetxController {
     if (keyword.value.isEmpty) {
       return;
     }
-    
+
     try {
       isLoading.value =
           true; // Menandakan bahwa aplikasi sedang melakukan proses loading
@@ -33,10 +34,6 @@ class SearchKeywordController extends GetxController {
           "$baseUrl/everything?q=${Uri.encodeQueryComponent(keyword.value)}&sortBy=relevancy&apiKey=$apiKey",
         ),
       );
-
-      // Debugging
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Body: ${response.body}");
 
       if (response.statusCode == 200) {
         // Jika status code response 200 (berhasil)
@@ -49,21 +46,28 @@ class SearchKeywordController extends GetxController {
           );
         }
       } else {
-        Get.snackbar('Error', 'Failed to fetch news'); // Menampilkan pesan error
+        Get.snackbar(
+          'Error',
+          'Failed to fetch news',
+          backgroundColor: AppColors.errorSnackbar,
+          colorText: AppColors.errorSnackbarText,
+        ); // Menampilkan pesan error
       }
     } catch (e) {
-      print("Terjadi kesalahan: ${e.toString()}");
-      Get.snackbar('Error', 'Error occured: ${e.toString()}');
+      Get.snackbar(
+        'Error',
+        'Error occured: ${e.toString()}',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     } finally {
       isLoading.value = false;
-      print(articles);
     }
   }
-  
+
   // Fungsi untuk mencari berita berdasarkan keyword yang diinputkan user
   void searchNews(String newKeyword) {
     keyword.value = newKeyword; // Mengubah keyword yang dicari
     fetchKeywordNews();
   }
 }
-  

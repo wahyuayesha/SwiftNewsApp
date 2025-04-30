@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:newsapp/constants/base_url.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/models/news.dart';
 
 class HomeController extends GetxController {
@@ -9,7 +10,7 @@ class HomeController extends GetxController {
 
   var topHeadlines = <News>[].obs; // Variabel untuk berita utama
   var popularNews = <News>[].obs; // Variabel untuk berita populer
-  var isLoading = false.obs; 
+  var isLoading = false.obs;
 
   @override
   void onInit() {
@@ -17,8 +18,12 @@ class HomeController extends GetxController {
     fetchNews(type: 'top-headlines'); // Ambil berita top
     fetchNews(type: 'everything', sortBy: 'popularity'); // Ambil berita populer
   }
-  
-  Future<void> fetchNews({required String type, String? sortBy, String? query}) async {
+
+  Future<void> fetchNews({
+    required String type,
+    String? sortBy,
+    String? query,
+  }) async {
     try {
       isLoading.value = true;
       Uri url;
@@ -26,7 +31,9 @@ class HomeController extends GetxController {
       if (type == 'top-headlines') {
         url = Uri.parse("$baseUrl/top-headlines?country=us&apiKey=$apiKey");
       } else {
-        url = Uri.parse("$baseUrl/everything?q=${query ?? 'trending'}&sortBy=$sortBy&apiKey=$apiKey");
+        url = Uri.parse(
+          "$baseUrl/everything?q=${query ?? 'trending'}&sortBy=$sortBy&apiKey=$apiKey",
+        );
       }
 
       final response = await http.get(url);
@@ -35,7 +42,7 @@ class HomeController extends GetxController {
         final data = jsonDecode(response.body);
         if (data["articles"] != null) {
           var articles = List<News>.from(
-            data["articles"].map<News>((item) => News.fromJson(item)).toList()
+            data["articles"].map<News>((item) => News.fromJson(item)).toList(),
           );
 
           if (type == 'top-headlines') {
@@ -45,10 +52,20 @@ class HomeController extends GetxController {
           }
         }
       } else {
-        Get.snackbar('Error', 'Gagal mengambil data berita');
+        Get.snackbar(
+          'Error',
+          'Failed to fetch news',
+          backgroundColor: AppColors.errorSnackbar,
+          colorText: AppColors.errorSnackbarText,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', 'Terjadi kesalahan: ${e.toString()}');
+      Get.snackbar(
+        'Error',
+        'Error occured: ${e.toString()}',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     } finally {
       isLoading.value = false;
     }

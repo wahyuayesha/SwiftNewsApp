@@ -8,7 +8,6 @@ import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/news_controller.dart';
-import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/pages/main/akun.dart';
@@ -34,7 +33,6 @@ void main() async {
   Get.put(SearchController());
   
   // Controller tambahan
-  Get.put(ProfilePicController());
   Get.put(WebViewControllerX());
 
   // Pengecekan untuk fetch bookmark setelah login

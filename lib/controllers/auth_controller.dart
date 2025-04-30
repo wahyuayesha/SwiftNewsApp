@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/main.dart';
@@ -29,14 +30,24 @@ class AuthController extends GetxController {
             'email': signUpController.emailController.text.trim(),
             'createdAt': Timestamp.now(),
           });
-      // Menghapus data dari textfield setelah sign in 
+      // Menghapus data dari textfield setelah sign in
       signUpController.usernameController.clear();
       signUpController.emailController.clear();
       signUpController.passwordController.clear();
     } on FirebaseAuthException catch (e) {
-      Get.snackbar('Login Failed', e.message ?? 'An error occurred');
+      Get.snackbar(
+        'Login Failed',
+        e.message ?? 'An error occurred',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     }
   }
 
@@ -48,18 +59,27 @@ class AuthController extends GetxController {
         email: signInController.emailController.text.trim(),
         password: signInController.passwordController.text.trim(),
       );
-      await userController.fetchUserData(); // Memanggil fungsi untuk mengambil data user
+      await userController
+          .fetchUserData(); // Memanggil fungsi untuk mengambil data user
 
       await bookmarkController.fetchBookmarkedNews();
       // Menghapus data dari textfield setelah login
       signInController.emailController.clear();
       signInController.passwordController.clear();
-      print('📍 NEWS BOOKMARKED: ${bookmarkController.bookmarked_news}');
     } on FirebaseAuthException catch (e) {
-      Get.snackbar('Login Failed', e.message ?? 'An error occurred');
-      print(e);
+      Get.snackbar(
+        'Login Failed',
+        e.message ?? 'An error occurred',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      Get.snackbar(
+        'Error',
+        e.toString(),
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     }
   }
 
@@ -72,7 +92,7 @@ class AuthController extends GetxController {
     bookmarkController.clearBookmarks();
   }
 
-  // FUNGSI UNTUK (HAPUS)AKUN
+  // FUNGSI UNTUK (HAPUS) AKUN
   Future<void> deleteUserAccount() async {
     final user = FirebaseAuth.instance.currentUser;
 
@@ -82,14 +102,27 @@ class AuthController extends GetxController {
             .collection('users')
             .doc(user.uid)
             .delete();
+
+        await bookmarkController.deleteAllUserBookmarks(); 
         await user.delete();
+
         Get.snackbar('Success', 'Account deleted permanently.');
         Get.offAll(Main());
       } catch (e) {
-        Get.snackbar('Error', 'Error occured: $e');
+        Get.snackbar(
+          'Error',
+          'Error occured: $e',
+          backgroundColor: AppColors.errorSnackbar,
+          colorText: AppColors.errorSnackbarText,
+        );
       }
     } else {
-      Get.snackbar('Error', 'User not found.');
+      Get.snackbar(
+        'Error',
+        'User not found.',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     }
   }
 }

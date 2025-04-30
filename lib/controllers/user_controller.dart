@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/main.dart';
 import 'package:newsapp/models/user.dart';
 
 class UserController extends GetxController {
   var user = Rxn<User>(); // dari firebase auth
-  var userModel =Rxn<UserModel>(); // dari firestore (username, email, profile picture, createdAt)
-  
+  var userModel = Rxn<UserModel>(); // dari firestore (username, email, profile picture, createdAt)
+
   // FETCH USER DATA DARI FIRESTORE DIAWAL
   @override
   void onInit() {
@@ -27,12 +28,12 @@ class UserController extends GetxController {
     });
   }
 
-
   // FUNCTION: UNTUK (MENGAMBIL) DATA USER DARI FIRESTORE
   Future<void> fetchUserData() async {
     final uid = user.value?.uid;
     try {
-      final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      final doc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
       if (doc.exists) {
         userModel.value = UserModel.fromMap(doc.data()!);
@@ -40,24 +41,26 @@ class UserController extends GetxController {
         userModel.value = null;
       }
     } catch (e) {
-      print('Error fetching user data: $e');
       userModel.value = null;
-    } 
+    }
   }
 
-
-  /// FUNCTION: UNTUK (MEMPERBARUI) DATA USER 
+  /// FUNCTION: UNTUK (MEMPERBARUI) DATA USER
   Future<void> updateUserData({
     required String currentPassword,
     required String newUsername,
     required String newProfilePictureUrl,
     required String newPassword,
-    }) async {
-
+  }) async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user == null) {
-      Get.snackbar('Kesalahan', 'Pengguna belum login.');
+      Get.snackbar(
+        'Error',
+        'User not logged in.',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
       return;
     }
 
@@ -76,7 +79,7 @@ class UserController extends GetxController {
         await user.updatePassword(newPassword);
       }
 
-    // 2. UPDATE DATA FIRESTORE
+      // 2. UPDATE DATA FIRESTORE
       Map<String, dynamic> newData = {};
       if (newUsername.isNotEmpty) newData['username'] = newUsername;
       if (newProfilePictureUrl.isNotEmpty) newData['profilePicture'] = newProfilePictureUrl;
@@ -92,10 +95,22 @@ class UserController extends GetxController {
       Get.snackbar('Succes', 'Your data has been updated successfully!');
       Get.offAll(Main());
     } catch (e) {
-      if (e.toString().contains('dev.flutter.pigeon.firebase_auth_platform_interface.FirebaseAuthUserHostApi.reauthenticateWithCredential')) {
-        Get.snackbar('Error', 'Password incorrect.');
+      if (e.toString().contains(
+        'dev.flutter.pigeon.firebase_auth_platform_interface.FirebaseAuthUserHostApi.reauthenticateWithCredential',
+      )) {
+        Get.snackbar(
+          'Error',
+          'Password incorrect.',
+          backgroundColor: AppColors.errorSnackbar,
+          colorText: AppColors.errorSnackbarText,
+        );
       } else {
-        Get.snackbar('Error', 'Failed to update data: ${e.toString()}');
+        Get.snackbar(
+          'Error',
+          'Failed to update data: ${e.toString()}',
+          backgroundColor: AppColors.errorSnackbar,
+          colorText: AppColors.errorSnackbarText,
+        );
       }
     }
   }
@@ -111,7 +126,12 @@ class UserController extends GetxController {
       });
       Get.snackbar('Success', 'Bug reported successfully!');
     } catch (e) {
-      Get.snackbar('Error', 'Failed to report bug: ${e.toString()}');
+      Get.snackbar(
+        'Error',
+        'Failed to report bug: ${e.toString()}',
+        backgroundColor: AppColors.errorSnackbar,
+        colorText: AppColors.errorSnackbarText,
+      );
     }
   }
 }

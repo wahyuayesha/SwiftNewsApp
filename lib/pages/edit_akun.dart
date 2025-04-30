@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
-import 'package:newsapp/controllers/profilePicture_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 
 class EditProfileController extends GetxController {
@@ -22,13 +21,11 @@ class EditAkun extends StatelessWidget {
   EditAkun({super.key});
   final EditProfileController editController = Get.put(EditProfileController());
   final UserController userController = Get.put(UserController());
-  final ProfilePicController profileController = Get.find();
   final AuthController authController = Get.find();
 
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController currentPasswordController =
-      TextEditingController();
+  final TextEditingController currentPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
 
   var profilePictureUrl = '';
@@ -87,8 +84,7 @@ class EditAkun extends StatelessWidget {
                                           onTap: () {
                                             // Lakukan sesuatu saat gambar dipilih
                                             profilePictureUrl = 'assets/profile/profile${index + 1}.jpg';
-                                            print('Gambar ${index + 1} dipilih');
-                                            Get.snackbar('Notice', 'Save to see profile picture changes',duration: Duration(seconds: 2));
+                                            Get.snackbar('Notice', 'Save to see profile picture changes',duration: Duration(seconds: 2),);
                                             Navigator.pop(context);
                                           },
                                           child: CircleAvatar(
@@ -244,13 +240,6 @@ class EditAkun extends StatelessWidget {
       confirmTextColor: Colors.white,
       buttonColor: AppColors.primary,
       onConfirm: () async {
-        // Debugging
-        print('Username: ${usernameController.text.trim()}');
-        print('Email: ${emailController.text.trim()}');
-        print('Current Password: ${currentPasswordController.text.trim()}');
-        print('New Password: ${newPasswordController.text.trim()}');
-        print('Profile Picture URL: $profilePictureUrl');
-        // Panggil fungsi updateUserData
         await userController.updateUserData(
           newUsername: usernameController.text.trim(),
           currentPassword: currentPasswordController.text.trim(),
