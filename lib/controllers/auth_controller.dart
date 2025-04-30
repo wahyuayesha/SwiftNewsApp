@@ -29,6 +29,10 @@ class AuthController extends GetxController {
             'email': signUpController.emailController.text.trim(),
             'createdAt': Timestamp.now(),
           });
+      // Menghapus data dari textfield setelah sign in 
+      signUpController.usernameController.clear();
+      signUpController.emailController.clear();
+      signUpController.passwordController.clear();
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Login Failed', e.message ?? 'An error occurred');
     } catch (e) {
@@ -37,15 +41,23 @@ class AuthController extends GetxController {
   }
 
   // FUNGSI UNTUK (SIGN IN)
+
   Future signIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: signInController.emailController.text.trim(),
         password: signInController.passwordController.text.trim(),
       );
-      userController.fetchUserData();
+      await userController.fetchUserData(); // Memanggil fungsi untuk mengambil data user
+
+      await bookmarkController.fetchBookmarkedNews();
+      // Menghapus data dari textfield setelah login
+      signInController.emailController.clear();
+      signInController.passwordController.clear();
+      print('📍 NEWS BOOKMARKED: ${bookmarkController.bookmarked_news}');
     } on FirebaseAuthException catch (e) {
       Get.snackbar('Login Failed', e.message ?? 'An error occurred');
+      print(e);
     } catch (e) {
       Get.snackbar('Error', e.toString());
     }
@@ -55,10 +67,6 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     // Menghapus data user dari controller
     userController.userModel.value = null;
-    // Membersihkan textfield 
-    Get.delete<SignInController>(); 
-    Get.delete<SignUpController>(); 
-    // Log out dari firebase auth
     await FirebaseAuth.instance.signOut();
     // Menghapus data bookmark
     bookmarkController.clearBookmarks();

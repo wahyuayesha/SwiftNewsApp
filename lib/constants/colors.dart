@@ -9,3 +9,4 @@ class AppColors {
   static const Color buttonColor = Color.fromRGBO(63, 125, 88, 1);   // Warna button
   static Color lightgrey = Colors.grey.shade100;   // Warna button
 }
+

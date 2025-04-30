@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
+import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 
 class SignInController extends GetxController {
@@ -24,20 +25,7 @@ class SignInPage extends StatelessWidget {
 
   final SignInController controller = Get.put(SignInController());
   final UserController userController = Get.find();
-
-  Future signIn() async {
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: controller.emailController.text.trim(),
-      password: controller.passwordController.text.trim(),
-      );
-      userController.fetchUserData(); // Memanggil fungsi untuk mengambil data user
-    } on FirebaseAuthException catch (e) {
-      Get.snackbar('Login Failed', e.message ?? 'An error occurred');
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
-    }
-  }
+  final AuthController authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +133,7 @@ class SignInPage extends StatelessWidget {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () async {
-                        await signIn();
+                        await authController.signIn();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.buttonColor,

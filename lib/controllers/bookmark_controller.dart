@@ -5,7 +5,9 @@ import 'package:newsapp/models/news.dart';
 
 class BookmarkController extends GetxController {
   final UserController userController = Get.find<UserController>();
-  RxList<News> bookmarked_news = <News>[].obs; // Menyimpan berita yang sudah di bookmark pada user saat ini
+  RxList<News> bookmarked_news =
+      <News>[]
+          .obs; // Menyimpan berita yang sudah di bookmark pada user saat ini
 
   // FUNCTION: Mengecek apakah berita sudah di bookmark
   bool isBookmarked(News news) {
@@ -36,11 +38,12 @@ class BookmarkController extends GetxController {
   // Menghapus berita dari bookmark
   Future<void> removeBookmark(News news) async {
     try {
-      final snapshot = await FirebaseFirestore.instance
-          .collection('bookmarked')
-          .where('url', isEqualTo: news.url)
-          .where('email', isEqualTo: userController.userModel.value?.email)
-          .get();
+      final snapshot =
+          await FirebaseFirestore.instance
+              .collection('bookmarked')
+              .where('url', isEqualTo: news.url)
+              .where('email', isEqualTo: userController.userModel.value?.email)
+              .get();
 
       for (var doc in snapshot.docs) {
         await doc.reference.delete();
@@ -53,8 +56,55 @@ class BookmarkController extends GetxController {
     }
   }
 
-  
+  // FUNGSI: Fetch semua bookmark user dari Firestore
+  Future<void> fetchBookmarkedNews() async {
+    try {
+      final email = userController.userModel.value?.email;
+      print('📩 EMAIL: $email');
+      final snapshot =
+          await FirebaseFirestore.instance
+              .collection('bookmarked')
+              .where('email', isEqualTo: email)
+              .get();
+
+      bookmarked_news.clear();
+      for (var doc in snapshot.docs) {
+        bookmarked_news.add(
+          News(
+            title: doc['title'] ?? 'Tanpa Judul',
+            url: doc['url'] ?? '',
+            imageUrl: doc['urlToImage'] ?? '',
+            source: doc['source'] ?? 'Tanpa Sumber',
+          ),
+        );
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Gagal mengambil data bookmark: $e');
+    }
+  }
+
+  Future<void> deleteAllUserBookmarks() async {
+    try {
+      final email = userController.userModel.value?.email;
+
+      if (email != null) {
+        // Cari dan hapus data bookmark berdasarkan email
+        final snapshot =
+            await FirebaseFirestore.instance
+                .collection('bookmarked')
+                .where('email', isEqualTo: email)
+                .get();
+
+        for (var doc in snapshot.docs) {
+          await doc.reference.delete();
+        }
+      }
+    } catch (e) {
+      print('Error deleting bookmarks: $e');
+    }
+  }
+
   void clearBookmarks() {
-    bookmarked_news.clear(); 
+    bookmarked_news.clear();
   }
 }

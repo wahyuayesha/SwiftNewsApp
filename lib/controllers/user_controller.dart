@@ -40,6 +40,7 @@ class UserController extends GetxController {
         userModel.value = null;
       }
     } catch (e) {
+      print('Error fetching user data: $e');
       userModel.value = null;
     } 
   }

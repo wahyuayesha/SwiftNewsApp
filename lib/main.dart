@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,21 +24,27 @@ void main() async {
   await Firebase.initializeApp();
 
   // Controller utama & global
-  Get.put(UserController());
-  Get.put(HomeController());
+  Get.put(UserController());  
+  Get.put(HomeController());  
+  Get.put(BookmarkController()); 
   Get.put(AuthController());
 
   // Controller halaman/fungsi
   Get.put(NewsController());
   Get.put(SearchController());
-  Get.put(BookmarkController());
-
+  
   // Controller tambahan
   Get.put(ProfilePicController());
   Get.put(WebViewControllerX());
 
+  // Pengecekan untuk fetch bookmark setelah login
+  if (FirebaseAuth.instance.currentUser != null) {
+    await Get.find<BookmarkController>().fetchBookmarkedNews();
+  }
+
   runApp(MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -90,7 +97,7 @@ class MainPage extends StatelessWidget {
     return Obx(
       () => SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.background,
           body: halaman[indexHalaman.value], // Menampilkan halaman sesuai index
           bottomNavigationBar: Container(
             decoration: BoxDecoration(
