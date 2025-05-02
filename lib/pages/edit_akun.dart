@@ -17,6 +17,7 @@ class EditProfileController extends GetxController {
   }
 }
 
+// ignore: must_be_immutable
 class EditAkun extends StatelessWidget {
   EditAkun({super.key});
   final EditProfileController editController = Get.put(EditProfileController());
