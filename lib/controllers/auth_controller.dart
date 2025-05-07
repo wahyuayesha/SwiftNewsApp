@@ -13,8 +13,12 @@ class AuthController extends GetxController {
   final SignInController signInController = Get.put(SignInController());
   final UserController userController = Get.find();
   final BookmarkController bookmarkController = Get.find();
+
+  RxBool isloading = false.obs; // Menandakan apakah sedang loading
+
   // FUNGSI UNTUK (SIGN UP)
   Future signUp() async {
+    isloading.value = true;
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
@@ -34,6 +38,7 @@ class AuthController extends GetxController {
       signUpController.usernameController.clear();
       signUpController.emailController.clear();
       signUpController.passwordController.clear();
+      await userController.fetchUserData();
     } on FirebaseAuthException catch (e) {
       Get.snackbar(
         'Login Failed',
@@ -48,12 +53,15 @@ class AuthController extends GetxController {
         backgroundColor: AppColors.errorSnackbar,
         colorText: AppColors.errorSnackbarText,
       );
+    } finally {
+      isloading.value = false;
     }
   }
 
   // FUNGSI UNTUK (SIGN IN)
 
   Future signIn() async {
+    isloading.value = true;
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: signInController.emailController.text.trim(),
@@ -80,6 +88,8 @@ class AuthController extends GetxController {
         backgroundColor: AppColors.errorSnackbar,
         colorText: AppColors.errorSnackbarText,
       );
+    } finally {
+      isloading.value = false;
     }
   }
 
@@ -103,7 +113,7 @@ class AuthController extends GetxController {
             .doc(user.uid)
             .delete();
 
-        await bookmarkController.deleteAllUserBookmarks(); 
+        await bookmarkController.deleteAllUserBookmarks();
         await user.delete();
 
         Get.snackbar('Success', 'Account deleted permanently.');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/components/loading_button.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
@@ -130,21 +131,14 @@ class SignInPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    ElevatedButton(
+                    LoadingButton(
+                      isLoading: authController.isloading,
+                      label: 'Sign In',
                       onPressed: () async {
                         await authController.signIn();
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.buttonColor,
-                        foregroundColor: AppColors.background,
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Text('Sign In', style: TextStyle(fontSize: 17)),
                     ),
+
                     SizedBox(height: 25),
                   ],
                 ),
@@ -166,7 +160,7 @@ class SignInPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                     showSignUpPage();
+                      showSignUpPage();
                     },
                     child: Text('Sign Up'),
                   ),

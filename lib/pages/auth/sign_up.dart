@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newsapp/components/loading_button.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
@@ -23,7 +24,7 @@ class SignUpController extends GetxController {
 class SignUpPage extends StatelessWidget {
   final VoidCallback showSignInPage;
   SignUpPage({super.key, required this.showSignInPage});
-  
+
   final SignUpController controller = Get.put(SignUpController());
   final UserController userController = Get.put(UserController());
   final AuthController authController = Get.put(AuthController());
@@ -159,22 +160,12 @@ class SignUpPage extends StatelessWidget {
                       SizedBox(height: 40),
 
                       // Sign Up Button
-                      ElevatedButton(
+                      LoadingButton(
+                        isLoading: authController.isloading,
                         onPressed: () async {
                           await authController.signUp();
-                          await userController.fetchUserData();
                         },
-
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.buttonColor,
-                          foregroundColor: AppColors.background,
-                          minimumSize: Size(double.infinity, 50),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: Text('Sign up', style: TextStyle(fontSize: 17)),
+                        label: 'Sign Up',
                       ),
                     ],
                   ),
@@ -195,9 +186,12 @@ class SignUpPage extends StatelessWidget {
                       color: AppColors.textFieldBorder,
                     ),
                   ),
-                  TextButton(onPressed: () {
-                    showSignInPage();
-                  }, child: Text('Sign In')),
+                  TextButton(
+                    onPressed: () {
+                      showSignInPage();
+                    },
+                    child: Text('Sign In'),
+                  ),
                 ],
               ),
             ),
