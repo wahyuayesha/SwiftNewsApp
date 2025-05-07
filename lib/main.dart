@@ -37,8 +37,13 @@ void main() async {
 
   // Pengecekan untuk fetch bookmark setelah login
   if (FirebaseAuth.instance.currentUser != null) {
-    await Get.find<BookmarkController>().fetchBookmarkedNews();
-  }
+  final userController = Get.find<UserController>();
+
+  // Tunggu hingga userModel terisi (misalnya dari Firestore)
+  await userController.fetchUserData(); // <- pastikan fungsi ini ada dan mengisi userModel
+  await Get.find<BookmarkController>().fetchBookmarkedNews();
+}
+
 
   runApp(MyApp());
 }
