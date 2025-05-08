@@ -15,4 +15,5 @@ A simple and elegant Flutter news application that fetches and displays up-to-da
 🧠 Simple state management using GetX
 
 📸 SCREENSHOTS
-<img src="https://github.com/user-attachments/assets/3fb814ad-d6b3-4897-853d-a6cbea75d14a" width="300"/> <img src="https://github.com/user-attachments/assets/40b3a5ca-dc04-4cc8-840c-73852afe579a" width="300"/> <img src="https://github.com/user-attachments/assets/2e9b2a13-178f-475c-9c81-dbf1a9de9fbe" width="300"/>
+
+<img src="https://github.com/user-attachments/assets/3fb814ad-d6b3-4897-853d-a6cbea75d14a" width="300"/> <img src="https://github.com/user-attachments/assets/40b3a5ca-dc04-4cc8-840c-73852afe579a" width="300"/> 
