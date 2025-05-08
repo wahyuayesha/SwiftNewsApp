@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/widgets/appbar.dart';
+import 'package:newsapp/widgets/image_network_shimmer.dart';
 import 'package:newsapp/widgets/newsTile.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
@@ -91,17 +92,15 @@ class HomePage extends StatelessWidget {
           Container(
             height: 200,
             width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              image: DecorationImage(
-                image:
-                    news.imageUrl.isNotEmpty
-                        ? NetworkImage(news.imageUrl) as ImageProvider
-                        : const AssetImage('assets/noImage.jpg'),
-                fit: BoxFit.cover,
+             decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
               ),
+              clipBehavior: Clip.hardEdge,
+              child:
+                  news.imageUrl != ''
+                      ? ImageNetworkShimmer(imageUrl: news.imageUrl)
+                      : Image.asset('assets/noImage.jpg', fit: BoxFit.cover),
             ),
-          ),
           // Meredupkan gambar
           Container(
             height: 200,

@@ -5,6 +5,7 @@ import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/models/news.dart';
 import 'package:newsapp/pages/news_detail.dart';
+import 'package:newsapp/widgets/image_network_shimmer.dart';
 
 // ignore: must_be_immutable
 class NewsItem extends StatelessWidget {
@@ -31,14 +32,12 @@ class NewsItem extends StatelessWidget {
               width: 110,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image:
-                      news.imageUrl != ''
-                          ? NetworkImage(news.imageUrl)
-                          : const AssetImage('assets/noImage.jpg'),
-                  fit: BoxFit.cover,
-                ),
               ),
+              clipBehavior: Clip.hardEdge,
+              child:
+                  news.imageUrl != ''
+                      ? ImageNetworkShimmer(imageUrl: news.imageUrl)
+                      : Image.asset('assets/noImage.jpg', fit: BoxFit.cover),
             ),
             const SizedBox(width: 10),
             Expanded(

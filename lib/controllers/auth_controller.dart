@@ -67,9 +67,7 @@ class AuthController extends GetxController {
         email: signInController.emailController.text.trim(),
         password: signInController.passwordController.text.trim(),
       );
-      await userController
-          .fetchUserData(); // Memanggil fungsi untuk mengambil data user
-
+      await userController.fetchUserData(); 
       await bookmarkController.fetchBookmarkedNews();
       // Menghapus data dari textfield setelah login
       signInController.emailController.clear();
