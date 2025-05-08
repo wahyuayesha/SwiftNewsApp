@@ -1,7 +1,9 @@
 📰 SWIFTNEWS
+
 A simple and elegant Flutter news application that fetches and displays up-to-date news articles from NewsAPI.org. Built using GetX for state management and includes Shimmer loading animation for a better user experience.
 
 🚀 FEATURES
+
 🗂 Category-based filtering (e.g., Business, Technology, Health)
 
 🔍 Search news based on keywords
