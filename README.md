@@ -1,16 +1,23 @@
-# newsapp
+📰 SWIFTNEWS 
+A simple and elegant Flutter news application that fetches and displays up-to-date news articles from NewsAPI.org. Built using GetX for state management and includes Shimmer loading animation for a better user experience.
 
-A new Flutter project.
+🚀 FEATURES
+🗂 Category-based filtering (e.g., Business, Technology, Health)
 
-## Getting Started
+🔍 Find news based on keywords
 
-This project is a starting point for a Flutter application.
+🔖 bookmark news that interests you to read later
 
-A few resources to get you started if this is your first Flutter project:
+⚡ Smooth loading with shimmer placeholders
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+🎯 Clean and modern UI with Material Design
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🧠 Simple state management using GetX
+
+📸 Screenshots
+![WhatsApp Image 2025-05-08 at 10 25 01_264e7333](https://github.com/user-attachments/assets/3fb814ad-d6b3-4897-853d-a6cbea75d14a)
+
+![WhatsApp Image 2025-05-08 at 10 25 01_96f12f7b](https://github.com/user-attachments/assets/40b3a5ca-dc04-4cc8-840c-73852afe579a)
+
+
+![WhatsApp Image 2025-05-08 at 10 25 02_9d1fbfed](https://github.com/user-attachments/assets/2e9b2a13-178f-475c-9c81-dbf1a9de9fbe)
