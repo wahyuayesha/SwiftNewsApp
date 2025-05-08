@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newsapp/components/appbar.dart';
-import 'package:newsapp/components/newsTile.dart';
+import 'package:newsapp/widgets/appbar.dart';
+import 'package:newsapp/widgets/newsTile.dart';
 import 'package:newsapp/controllers/news_controller.dart';
 import 'package:newsapp/constants/colors.dart';
+import 'package:newsapp/widgets/shimmer_news.dart';
 
 class BeritaScreen extends StatelessWidget {
+  const BeritaScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NewsController>(
       builder: (newsController) {
         return Scaffold(
           backgroundColor: AppColors.background,
-          appBar: AppBar(title: MyAppBar(), surfaceTintColor: AppColors.background, backgroundColor: AppColors.background),
+          appBar: AppBar(
+            title: MyAppBar(),
+            surfaceTintColor: AppColors.background,
+            backgroundColor: AppColors.background,
+          ),
           body: Column(
             children: [
               // Button-button kategori
@@ -66,26 +73,24 @@ class BeritaScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Builder berita-berita dari API
               Expanded(
                 child: Obx(() {
                   if (newsController.isLoading.value) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (newsController.articles.isEmpty) {
-                    return Center( 
-                      child: Image.asset('assets/nodata.png', scale: 2),
+                    // Loading shimmer
+                    return ShimmerLoading();
+                  } else {
+                    // Tampilkan berita-berita
+                    return ListView.builder(
+                      itemCount: newsController.articles.length,
+                      itemBuilder: (context, index) {
+                        final news = newsController.articles[index];
+                        return NewsItem(news: news);
+                      },
                     );
                   }
-                  return ListView.builder(
-                    itemCount: newsController.articles.length,
-                    itemBuilder: (context, index) {
-                      final news = newsController.articles[index];
-                      return NewsItem(news: news);
-                    },
-                  );
                 }),
               ),
             ],

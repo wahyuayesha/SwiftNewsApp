@@ -38,7 +38,7 @@ class NewsController extends GetxController {
       isLoading.value = true;
       final response = await http.get(
         Uri.parse(
-          '$baseUrl?country=us&category=${selectedCategory.value}&apiKey=$apiKey',
+          '$baseUrl?country=us&category=${selectedCategory.value}&apiKey=${AppConfig().apiKey}',
         ),
       );
 

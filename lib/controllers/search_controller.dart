@@ -31,7 +31,7 @@ class SearchKeywordController extends GetxController {
       final response = await http.get(
         // Melakukan request data berita dari API
         Uri.parse(
-          "$baseUrl/everything?q=${Uri.encodeQueryComponent(keyword.value)}&sortBy=relevancy&apiKey=$apiKey",
+          "$baseUrl/everything?q=${Uri.encodeQueryComponent(keyword.value)}&sortBy=relevancy&apiKey=${AppConfig().apiKey}",
         ),
       );
 

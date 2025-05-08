@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newsapp/components/loading_button.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
+import 'package:newsapp/widgets/loading_button.dart';
 
 class SignUpController extends GetxController {
   final usernameController = TextEditingController();

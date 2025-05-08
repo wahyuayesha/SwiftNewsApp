@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
-import 'package:newsapp/components/appbar.dart';
-import 'package:newsapp/components/newsTile.dart';
+import 'package:newsapp/widgets/appbar.dart';
+import 'package:newsapp/widgets/newsTile.dart';
 import 'package:newsapp/controllers/search_controller.dart';
+import 'package:newsapp/widgets/shimmer_news.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -19,7 +20,7 @@ class _SearchState extends State<Search> {
   @override
   void initState() {
     super.initState();
-    textController.text = searchController.keyword.value; 
+    textController.text = searchController.keyword.value;
   }
 
   @override
@@ -66,25 +67,25 @@ class _SearchState extends State<Search> {
             ),
           ),
           const SizedBox(height: 10),
-          Obx(() {
-            if (searchController.isLoading.value) {
-              return const Expanded(child: Center(child: CircularProgressIndicator()));
-            }
-            if (searchController.articles.isEmpty) {
+          Expanded(
+            child: Obx(() {
+              if (searchController.isLoading.value) {
+                return ShimmerLoading();
+              }
+              if (searchController.articles.isEmpty) {
+                return Center(child: Image.asset('assets/nodata.png', scale: 2));
+              }
               return Expanded(
-                child: Center(child: Image.asset('assets/nodata.png', scale: 2)),
+                child: ListView.builder(
+                  itemCount: searchController.articles.length,
+                  itemBuilder: (context, index) {
+                    final news = searchController.articles[index];
+                    return NewsItem(news: news);
+                  },
+                ),
               );
-            }
-            return Expanded(
-              child: ListView.builder(
-                itemCount: searchController.articles.length,
-                itemBuilder: (context, index) {
-                  final news = searchController.articles[index];
-                  return NewsItem(news: news);
-                },
-              ),
-            );
-          }),
+            }),
+          ),
         ],
       ),
     );

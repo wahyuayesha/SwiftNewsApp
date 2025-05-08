@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
-import 'package:newsapp/components/appbar.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/pages/edit_akun.dart';
+import 'package:newsapp/widgets/appbar.dart';
 // import 'package:newsapp/pages/edit_akun.dart';
 
 // ignore: must_be_immutable
@@ -94,19 +94,34 @@ class MyAccount extends StatelessWidget {
                     ),
                     'Account',
                     account(context),
+                    const Icon(Icons.navigate_next_rounded)
                   ),
                   tilePengaturan(
                     context,
                     const Icon(Icons.help_outline_outlined, color: Colors.grey),
                     'About',
                     about(context),
+                    const Icon(Icons.navigate_next_rounded)
                   ),
                   tilePengaturan(
                     context,
                     const Icon(Icons.bug_report_outlined, color: Colors.grey),
                     'Report Bug',
                     reportBug(context),
+                    const Icon(Icons.navigate_next_rounded)
                   ),
+                  // tilePengaturan(
+                  //   context,
+                  //   const Icon(Icons.light_mode_outlined, color: Colors.grey),
+                  //   'Theme',
+                  //   reportBug(context),
+                  //   Switch(
+                  //     value: false, 
+                  //     onChanged: (value) {
+                  //       value = !value;
+                  //     },
+                  //     inactiveTrackColor: AppColors.primary),
+                  // ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -141,6 +156,7 @@ class MyAccount extends StatelessWidget {
     Icon icon,
     String teks,
     Widget route,
+    Widget? trailing,
   ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -151,7 +167,7 @@ class MyAccount extends StatelessWidget {
       child: ListTile(
         leading: icon,
         title: Text(teks),
-        trailing: const Icon(Icons.navigate_next_rounded),
+        trailing: trailing,
         onTap: () {
           showDialog(
             context: context,

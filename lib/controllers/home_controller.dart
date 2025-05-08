@@ -29,10 +29,10 @@ class HomeController extends GetxController {
       Uri url;
 
       if (type == 'top-headlines') {
-        url = Uri.parse("$baseUrl/top-headlines?country=us&apiKey=$apiKey");
+        url = Uri.parse("$baseUrl/top-headlines?country=us&apiKey=${AppConfig().apiKey}");
       } else {
         url = Uri.parse(
-          "$baseUrl/everything?q=${query ?? 'trending'}&sortBy=$sortBy&apiKey=$apiKey",
+          "$baseUrl/everything?q=${query ?? 'trending'}&sortBy=$sortBy&apiKey=${AppConfig().apiKey}",
         );
       }
 

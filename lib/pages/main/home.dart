@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:newsapp/constants/colors.dart';
-import 'package:newsapp/components/appbar.dart';
-import 'package:newsapp/components/newsTile.dart';
+import 'package:newsapp/widgets/appbar.dart';
+import 'package:newsapp/widgets/newsTile.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/models/news.dart';
 import 'package:newsapp/pages/news_detail.dart';
+import 'package:newsapp/widgets/shimmer_news.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -19,7 +20,11 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: MyAppBar(), surfaceTintColor: AppColors.background, backgroundColor: AppColors.background),
+      appBar: AppBar(
+        title: MyAppBar(),
+        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.background,
+      ),
       body: Column(
         children: [
           Padding(
@@ -53,7 +58,7 @@ class HomePage extends StatelessWidget {
           Expanded(
             child: Obx(() {
               if (homeController.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
+                return ShimmerLoading();
               }
               if (homeController.popularNews.isEmpty) {
                 return Center(
