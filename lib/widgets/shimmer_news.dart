@@ -62,8 +62,8 @@ class ShimmerLoading extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Container(
-                            height: 15,
-                            width: 15,
+                            height: 20,
+                            width: 20,
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               shape: BoxShape.circle,
