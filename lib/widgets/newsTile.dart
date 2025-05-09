@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
+import 'package:newsapp/functions/format_waktu.dart';
 import 'package:newsapp/models/news.dart';
-import 'package:newsapp/pages/news_detail.dart';
+import 'package:newsapp/pages/news_content.dart';
 import 'package:newsapp/widgets/image_network_shimmer.dart';
 
 // ignore: must_be_immutable
@@ -14,8 +15,8 @@ class NewsItem extends StatelessWidget {
   final BookmarkController bookmarkController = Get.find();
   final News news;
   bool bookmarked = false;
-
-  @override
+  
+  @override 
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
@@ -44,10 +45,12 @@ class NewsItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(formatWaktu(news.publishedAt), style: TextStyle(color: AppColors.textFieldBorder),),
+                  SizedBox(height: 3),
                   Text(
                     news.title,
-                    style: const TextStyle(fontSize: 15),
-                    maxLines: 3,
+                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Row(

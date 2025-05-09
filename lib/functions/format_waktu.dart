@@ -6,11 +6,13 @@ String formatWaktu(String publishedAt) {
 
   final difference = now.difference(waktuPublish);
 
-  if (difference.inDays >= 1) {
-    return DateFormat("d MMMM y", "en_US").format(waktuPublish.toLocal());
-  } else if (difference.inHours >= 1) {
-    return '${difference.inHours} hours ago';
-  } else {
+  if (difference.inMinutes < 60) {
     return '${difference.inMinutes} minutes ago';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hours ago';
+  } else if (difference.inDays <= 5) {
+    return '${difference.inDays} days ago';
+  } else {
+    return DateFormat("d MMMM y", "en_US").format(waktuPublish.toLocal());
   }
 }

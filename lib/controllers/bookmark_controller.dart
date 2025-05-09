@@ -25,6 +25,7 @@ class BookmarkController extends GetxController {
           'urlToImage': news.imageUrl,
           'source': news.source,
           'email': userController.userModel.value?.email,
+          'publishedAt': news.publishedAt,
         });
 
         // Tambahkan ke UI secara realtime
@@ -70,7 +71,6 @@ class BookmarkController extends GetxController {
   Future<void> fetchBookmarkedNews() async {
     try {
       final email = userController.userModel.value?.email;
-      print('📩 EMAIL: $email');
       final snapshot =
           await FirebaseFirestore.instance
               .collection('bookmarked')
@@ -81,10 +81,11 @@ class BookmarkController extends GetxController {
       for (var doc in snapshot.docs) {
         bookmarked_news.add(
           News(
-            title: doc['title'] ?? 'Tanpa Judul',
+            title: doc['title'] ?? 'No Title',
             url: doc['url'] ?? '',
             imageUrl: doc['urlToImage'] ?? '',
-            source: doc['source'] ?? 'Tanpa Sumber',
+            source: doc['source'] ?? 'No Source',
+            publishedAt: doc['publishedAt'] ?? ''
           ),
         );
       }

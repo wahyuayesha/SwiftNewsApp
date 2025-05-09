@@ -8,7 +8,7 @@ import 'package:newsapp/widgets/newsTile.dart';
 import 'package:newsapp/controllers/home_controller.dart';
 import 'package:newsapp/controllers/webView_controller.dart';
 import 'package:newsapp/models/news.dart';
-import 'package:newsapp/pages/news_detail.dart';
+import 'package:newsapp/pages/news_content.dart';
 import 'package:newsapp/widgets/shimmer_news.dart';
 
 class HomePage extends StatelessWidget {
