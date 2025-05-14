@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
+import 'package:newsapp/functions/format_waktu.dart';
 import 'package:newsapp/pages/edit_akun.dart';
 import 'package:newsapp/widgets/appbar.dart';
 // import 'package:newsapp/pages/edit_akun.dart';
@@ -94,21 +95,21 @@ class MyAccount extends StatelessWidget {
                     ),
                     'Account',
                     account(context),
-                    const Icon(Icons.navigate_next_rounded)
+                    const Icon(Icons.navigate_next_rounded),
                   ),
                   tilePengaturan(
                     context,
                     const Icon(Icons.help_outline_outlined, color: Colors.grey),
                     'About',
                     about(context),
-                    const Icon(Icons.navigate_next_rounded)
+                    const Icon(Icons.navigate_next_rounded),
                   ),
                   tilePengaturan(
                     context,
                     const Icon(Icons.bug_report_outlined, color: Colors.grey),
                     'Report Bug',
                     reportBug(context),
-                    const Icon(Icons.navigate_next_rounded)
+                    const Icon(Icons.navigate_next_rounded),
                   ),
                   // tilePengaturan(
                   //   context,
@@ -116,7 +117,7 @@ class MyAccount extends StatelessWidget {
                   //   'Theme',
                   //   reportBug(context),
                   //   Switch(
-                  //     value: false, 
+                  //     value: false,
                   //     onChanged: (value) {
                   //       value = !value;
                   //     },
@@ -244,14 +245,23 @@ class MyAccount extends StatelessWidget {
             'Account',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),
-          Text(
-            'Username: ${user.username}',
-            style: TextStyle(color: AppColors.textFieldBorder),
-          ),
-          Text(
-            'Email: ${user.email}',
-            style: TextStyle(color: AppColors.textFieldBorder),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              Text(
+                'Username: ${user.username}',
+                style: TextStyle(color: AppColors.textFieldBorder),
+              ),
+              Text(
+                'Email: ${user.email}',
+                style: TextStyle(color: AppColors.textFieldBorder),
+              ),
+              Text(
+                'Created At: ${formatWaktu(user.createdAt)}',
+                style: TextStyle(color: AppColors.textFieldBorder),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
           TextButton(

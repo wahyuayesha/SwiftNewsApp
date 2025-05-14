@@ -32,7 +32,7 @@ class AuthController extends GetxController {
           .set({
             'username': signUpController.usernameController.text.trim(),
             'email': signUpController.emailController.text.trim(),
-            'createdAt': Timestamp.now(),
+            'createdAt': DateTime.now().toString(),
           });
       // Menghapus data dari textfield setelah sign in
       signUpController.usernameController.clear();
