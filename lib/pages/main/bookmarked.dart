@@ -13,17 +13,52 @@ class BookmarkView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(title: MyAppBar(), surfaceTintColor: AppColors.background, backgroundColor: AppColors.background),
+      appBar: AppBar(
+        title: MyAppBar(),
+        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.background,
+      ),
       body: Obx(() {
         return bookmarkController.bookmarked_news.isEmpty
-            ? Center(child: Image.asset('assets/nodata.png', scale: 2,))
+            ? Center(child: Image.asset('assets/nodata.png', scale: 2))
             : ListView.builder(
-                itemCount: bookmarkController.bookmarked_news.length,
-                itemBuilder: (context, index) {
-                  return NewsItem(news: bookmarkController.bookmarked_news[index]);
-                },
-              );
+              itemCount: bookmarkController.bookmarked_news.length,
+              itemBuilder: (context, index) {
+                return NewsItem(
+                  news: bookmarkController.bookmarked_news[index],
+                );
+              },
+            );
       }),
+      floatingActionButton: FloatingActionButton(
+        elevation: 0,
+        foregroundColor: AppColors.background,
+        backgroundColor: AppColors.primary,
+        onPressed: () {
+          alert();
+        },
+        child: Icon(Icons.delete),
+      ),
+    );
+  }
+
+  void alert() {
+    Get.defaultDialog(
+      title: 'Delete All Bookmarks',
+      titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      middleText: 'Are you sure you want to delete all bookmarks?',
+      textConfirm: 'Yes',
+      textCancel: 'No',
+      confirmTextColor: Colors.white,
+      buttonColor: AppColors.primary,
+      onConfirm: () {
+        bookmarkController.deleteAllUserBookmarks();
+        bookmarkController.clearBookmarks();
+        Get.back();
+      },
+      onCancel: () {
+        Get.back();
+      },
     );
   }
 }
