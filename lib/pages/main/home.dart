@@ -28,33 +28,43 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Obx(() {
-                  if (homeController.isLoading.value) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (homeController.topHeadlines.isEmpty) {
-                    return Expanded(
-                      child: Center(
-                        child: Image.asset('assets/nodata.png', scale: 2),
-                      ),
-                    );
-                  }
-                  final topnews = homeController.topHeadlines[0];
-                  return _buildBeritaUtama(context, topnews);
-                }),
-                const SizedBox(height: 25),
-                const Text(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(() {
+                if (homeController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (homeController.topHeadlines.isEmpty) {
+                  return Center(
+                    child: Image.asset('assets/nodata.png', scale: 2),
+                  );
+                }
+                return SizedBox(
+                  height: 200, 
+                  child: ListView.builder(
+                    itemCount: 3,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      final topnews = homeController.topHeadlines[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 7),
+                        child: _buildBeritaUtama(context, topnews),
+                      );
+                    },
+                  ),
+                );
+              }),
+              const SizedBox(height: 25),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: const Text(
                   'Popular News',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 10),
-              ],
-            ),
+              ),
+              const SizedBox(height: 10),
+            ],
           ),
           Expanded(
             child: Obx(() {
@@ -91,20 +101,18 @@ class HomePage extends StatelessWidget {
           // Gambar
           Container(
             height: 200,
-            width: double.infinity,
-             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              clipBehavior: Clip.hardEdge,
-              child:
-                  news.imageUrl != ''
-                      ? ImageNetworkShimmer(imageUrl: news.imageUrl)
-                      : Image.asset('assets/noImage.jpg', fit: BoxFit.cover),
-            ),
+            width: 320,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+            clipBehavior: Clip.hardEdge,
+            child:
+                news.imageUrl != ''
+                    ? ImageNetworkShimmer(imageUrl: news.imageUrl)
+                    : Image.asset('assets/noImage.jpg', fit: BoxFit.cover),
+          ),
           // Meredupkan gambar
           Container(
             height: 200,
-            width: double.infinity,
+            width: 320,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: const Color.fromARGB(54, 0, 0, 0),

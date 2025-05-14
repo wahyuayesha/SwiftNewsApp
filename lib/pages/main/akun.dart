@@ -181,6 +181,7 @@ class MyAccount extends StatelessWidget {
     );
   }
 
+  // Widget untuk user report bug
   Widget reportBug(context) {
     final TextEditingController reportController = TextEditingController();
     return SizedBox(
@@ -230,6 +231,7 @@ class MyAccount extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan informasi akun
   Widget account(context) {
     final user = userController.userModel.value;
 
@@ -279,6 +281,7 @@ class MyAccount extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan informasi tentang aplikasi
   Widget about(context) {
     return SizedBox(
       height: 300,

@@ -52,6 +52,15 @@ class BookmarkView extends StatelessWidget {
       confirmTextColor: Colors.white,
       buttonColor: AppColors.primary,
       onConfirm: () {
+        if (bookmarkController.bookmarked_news.isEmpty) {
+          Get.snackbar(
+            'Error',
+            'No bookmarks to delete',
+            backgroundColor: AppColors.errorSnackbar,
+            colorText: AppColors.errorSnackbarText,
+          );
+          return;
+        }
         bookmarkController.deleteAllUserBookmarks();
         bookmarkController.clearBookmarks();
         Get.back();
