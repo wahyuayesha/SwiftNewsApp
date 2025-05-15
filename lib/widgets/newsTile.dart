@@ -38,7 +38,7 @@ class NewsItem extends StatelessWidget {
               child:
                   news.imageUrl != ''
                       ? ImageNetworkShimmer(imageUrl: news.imageUrl)
-                      : Image.asset('assets/noImage.jpg', fit: BoxFit.cover),
+                      : Image.asset('assets/noImage.png', fit: BoxFit.cover),
             ),
             const SizedBox(width: 10),
             Expanded(

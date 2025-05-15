@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newsapp/constants/colors.dart';
+import 'package:newsapp/widgets/alert.dart';
 import 'package:newsapp/widgets/appbar.dart';
 import 'package:newsapp/widgets/newsTile.dart';
 import 'package:newsapp/controllers/bookmark_controller.dart';
@@ -35,39 +36,27 @@ class BookmarkView extends StatelessWidget {
         foregroundColor: AppColors.background,
         backgroundColor: AppColors.primary,
         onPressed: () {
-          alert();
+          alert(
+            'Delete All Bookmarks',
+            'Are you sure you want to delete all bookmarks?',
+            () {
+              if (bookmarkController.bookmarked_news.isEmpty) {
+                Get.snackbar(
+                  'Error',
+                  'No bookmarks to delete',
+                  backgroundColor: AppColors.errorSnackbar,
+                  colorText: AppColors.errorSnackbarText,
+                );
+                return;
+              }
+              bookmarkController.deleteAllUserBookmarks();
+              bookmarkController.clearBookmarks();
+              Get.back();
+            },
+          );
         },
         child: Icon(Icons.delete),
       ),
-    );
-  }
-
-  void alert() {
-    Get.defaultDialog(
-      title: 'Delete All Bookmarks',
-      titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      middleText: 'Are you sure you want to delete all bookmarks?',
-      textConfirm: 'Yes',
-      textCancel: 'No',
-      confirmTextColor: Colors.white,
-      buttonColor: AppColors.primary,
-      onConfirm: () {
-        if (bookmarkController.bookmarked_news.isEmpty) {
-          Get.snackbar(
-            'Error',
-            'No bookmarks to delete',
-            backgroundColor: AppColors.errorSnackbar,
-            colorText: AppColors.errorSnackbarText,
-          );
-          return;
-        }
-        bookmarkController.deleteAllUserBookmarks();
-        bookmarkController.clearBookmarks();
-        Get.back();
-      },
-      onCancel: () {
-        Get.back();
-      },
     );
   }
 }

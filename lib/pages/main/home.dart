@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:newsapp/constants/colors.dart';
+import 'package:newsapp/functions/format_waktu.dart';
 import 'package:newsapp/widgets/appbar.dart';
 import 'package:newsapp/widgets/image_network_shimmer.dart';
 import 'package:newsapp/widgets/newsTile.dart';
@@ -90,6 +91,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan berita utama
   Widget _buildBeritaUtama(BuildContext context, News news) {
     return GestureDetector(
       onTap: () {
@@ -107,7 +109,7 @@ class HomePage extends StatelessWidget {
             child:
                 news.imageUrl != ''
                     ? ImageNetworkShimmer(imageUrl: news.imageUrl)
-                    : Image.asset('assets/noImage.jpg', fit: BoxFit.cover),
+                    : Image.asset('assets/noImage.jpg', fit: BoxFit.fitHeight),
           ),
           // Meredupkan gambar
           Container(
@@ -115,7 +117,7 @@ class HomePage extends StatelessWidget {
             width: 320,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              color: const Color.fromARGB(54, 0, 0, 0),
+              color: const Color.fromARGB(83, 0, 0, 0),
             ),
           ),
           // Teks sumber
@@ -125,6 +127,14 @@ class HomePage extends StatelessWidget {
             child: Text(
               news.source,
               style: const TextStyle(color: Colors.blueAccent),
+            ),
+          ),
+          Positioned(
+            top: 20,
+            right: 20,
+            child: Text(
+              formatWaktu(news.publishedAt),
+              style: const TextStyle(color: Color.fromARGB(172, 255, 255, 255)),
             ),
           ),
           // Teks judul dan animasi
@@ -146,8 +156,9 @@ class HomePage extends StatelessWidget {
                   child: Text(
                     news.title,
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       color: AppColors.background,
+                      fontWeight: FontWeight.bold,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

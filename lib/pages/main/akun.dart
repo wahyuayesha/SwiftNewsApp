@@ -5,6 +5,7 @@ import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/functions/format_waktu.dart';
 import 'package:newsapp/pages/edit_akun.dart';
+import 'package:newsapp/widgets/alert.dart';
 import 'package:newsapp/widgets/appbar.dart';
 // import 'package:newsapp/pages/edit_akun.dart';
 
@@ -268,7 +269,13 @@ class MyAccount extends StatelessWidget {
           const SizedBox(height: 10),
           TextButton(
             onPressed: () {
-              alert();
+              alert(
+                'Delete Account',
+                'Are you sure you want to delete your current account?',
+                () async {
+                  await authController.deleteUserAccount();
+                },
+              );
             },
             style: TextButton.styleFrom(
               backgroundColor: Colors.redAccent,
@@ -303,25 +310,6 @@ class MyAccount extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  // Alert dialog untuk konfirmasi simpan perubahan
-  void alert() {
-    Get.defaultDialog(
-      title: 'Delete Account',
-      titleStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-      middleText: 'Are you sure you want to delete your current account?',
-      textConfirm: 'Yes',
-      textCancel: 'No',
-      confirmTextColor: Colors.white,
-      buttonColor: Colors.redAccent,
-      onConfirm: () async {
-        await authController.deleteUserAccount();
-      },
-      onCancel: () {
-        Get.back();
-      },
     );
   }
 }
