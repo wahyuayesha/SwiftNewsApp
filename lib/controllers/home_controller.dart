@@ -22,7 +22,6 @@ class HomeController extends GetxController {
   Future<void> fetchNews({
     required String type,
     String? sortBy,
-    String? query,
   }) async {
     try {
       isLoading.value = true;
@@ -32,7 +31,7 @@ class HomeController extends GetxController {
         url = Uri.parse("$baseUrl/top-headlines?country=us&apiKey=${AppConfig().apiKey}");
       } else {
         url = Uri.parse(
-          "$baseUrl/everything?q=${query ?? 'trending'}&sortBy=$sortBy&apiKey=${AppConfig().apiKey}",
+          "$baseUrl/everything?q=trending&sortBy=$sortBy&apiKey=${AppConfig().apiKey}",
         );
       }
 

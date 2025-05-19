@@ -4,6 +4,7 @@ import 'package:newsapp/constants/colors.dart';
 import 'package:newsapp/controllers/auth_controller.dart';
 import 'package:newsapp/controllers/user_controller.dart';
 import 'package:newsapp/widgets/loading_button.dart';
+import 'package:newsapp/widgets/welcome_dialog.dart';
 
 class SignUpController extends GetxController {
   final usernameController = TextEditingController();
@@ -164,6 +165,7 @@ class SignUpPage extends StatelessWidget {
                         isLoading: authController.isloading,
                         onPressed: () async {
                           await authController.signUp();
+                          Get.dialog(WelcomeDialog());
                         },
                         label: 'Sign Up',
                       ),

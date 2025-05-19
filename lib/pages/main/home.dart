@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
             child:
                 news.imageUrl != ''
                     ? ImageNetworkShimmer(imageUrl: news.imageUrl)
-                    : Image.asset('assets/noImage.jpg', fit: BoxFit.fitHeight),
+                    : Image.asset('assets/noImage.png', fit: BoxFit.fill),
           ),
           // Meredupkan gambar
           Container(
