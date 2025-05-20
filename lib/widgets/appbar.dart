@@ -9,7 +9,7 @@ class MyAppBar extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('assets/icon.png', scale: 2.5),
+        Image.asset('assets/icon.png', scale: 8),
         SizedBox(width: 5),
         Row(
           children: [

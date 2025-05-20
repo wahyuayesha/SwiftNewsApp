@@ -13,7 +13,7 @@ class ImageNetworkShimmer extends StatelessWidget {
       imageUrl,
       fit: BoxFit.cover,
       errorBuilder: (context, error, stackTrace) {
-        return Image.asset('assets/noImage.png', fit: BoxFit.cover);
+        return Image.asset('assets/noImage.png', fit: BoxFit.fill);
       },
       loadingBuilder: (context, child, loadingProgress) {
         if (loadingProgress == null) return child;
